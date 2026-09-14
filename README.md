@@ -2,19 +2,20 @@
 
 A collection of modern C++ header-only libraries for declarative programming, metaprogramming, functional programming.
 
+**Yu Libraries are work in progress. APIs would be changed without notice.**
+
 ## Libraries
 
-| Library       | Description                                                      | Version    |
-| ------------- | ---------------------------------------------------------------- | ---------- |
-| Yu.Functional | A library of higher-order functions and functional utilities.    | 0.1.0-beta |
-| Yu.Meta       | A foundational library for expression-based metaprogramming.     | 0.1.0-beta |
-| Yu.Tuples     | A tuple algorithm and lazy views library inspired by C++ Ranges. | 0.1.0-beta |
-| Yu.Utility    | A modern C++ utility library.                                    | 0.1.0-beta |
+| Library       | Description                                                      |
+| ------------- | ---------------------------------------------------------------- |
+| Yu.Functional | A library of higher-order functions and functional utilities.    |
+| Yu.Meta       | A foundational library for expression-based metaprogramming.     |
+| Yu.Tuples     | A tuple algorithm and lazy views library inspired by C++ Ranges. |
+| Yu.Utility    | A modern C++ utility library.                                    |
 
 ## Requirements
 
 - C++23-compatible compiler
-- CMake 3.25 or later
 
 ## Documentation
 
