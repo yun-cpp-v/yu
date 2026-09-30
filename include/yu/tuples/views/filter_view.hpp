@@ -30,7 +30,7 @@ class filter_view : public view_interface<filter_view<View, Pred>> {
             constexpr auto result = []<std::size_t... Idx>(std::index_sequence<Idx...>) consteval {
                 static constexpr std::array flags = {_detail::meta_predicate_result_at_v<Pred, View, Idx>...};
 
-                auto index_table_view = std::views::iota(std::size_t{0}, size_v<View>)
+                auto index_table_view = std::views::iota(0uz, size_v<View>)
                                         | std::views::filter([](std::size_t index) { return flags[index]; });
 
                 constexpr std::size_t size = std::ranges::count(flags, true);

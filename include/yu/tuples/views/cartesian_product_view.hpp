@@ -28,7 +28,7 @@ class cartesian_product_view : public view_interface<cartesian_product_view<View
         static consteval auto make_indices_table() {
             constexpr auto result = [] consteval {
                 auto indices_table_view
-                    = std::views::cartesian_product(std::views::iota(std::size_t{0}, size_v<Views>)...);
+                    = std::views::cartesian_product(std::views::iota(0uz, size_v<Views>)...);
 
                 using indices_t            = std::array<std::size_t, sizeof...(Views)>;
                 constexpr std::size_t size = (size_v<Views> * ... * 1);
