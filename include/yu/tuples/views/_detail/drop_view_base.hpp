@@ -8,7 +8,6 @@
 #include <yu/tuples/views/all.hpp>
 #include <yu/tuples/views/view_interface.hpp>
 #include <cstddef>
-#include <type_traits>
 #include <utility>
 
 namespace yu::tuples::_detail {
@@ -24,7 +23,7 @@ class drop_view_base {
     public:
         static constexpr auto size = base_size_ - drop_count_;
 
-        constexpr explicit drop_view_base(View view) noexcept(std::is_nothrow_move_constructible_v<View>) :
+        constexpr explicit drop_view_base(View view) :
             base_(std::move(view)) {}
 
         template <typename Self>

@@ -65,7 +65,7 @@ class separator_insert_view : public tuples::view_interface<separator_insert_vie
 } // namespace _detail::join_with_view
 
 template <view View, view Pattern>
-requires _detail::tuple_of_tuples<View> 
+requires _detail::tuple_of_tuples<View>
 class join_with_view :
     public _detail::flatten_view_base<_detail::join_with_view::separator_insert_view<View, Pattern>>,
     public view_interface<join_with_view<View, Pattern>> {

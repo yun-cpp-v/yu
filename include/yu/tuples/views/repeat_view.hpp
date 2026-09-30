@@ -20,7 +20,7 @@ class repeat_view : public view_interface<repeat_view<T, Count>> {
     public:
         static constexpr index_t<Count> size{};
 
-        constexpr explicit repeat_view(T value, index_t<Count>) noexcept(std::is_nothrow_move_constructible_v<T>) :
+        constexpr explicit repeat_view(T value, index_t<Count>) :
             value_(std::move(value)) {}
 
         template <std::size_t Idx, typename Self>

@@ -12,7 +12,6 @@
 #include <yu/tuples/concepts/view.hpp>
 #include <algorithm>
 #include <tuple>
-#include <type_traits>
 #include <utility>
 
 namespace yu::tuples {
@@ -46,7 +45,7 @@ class zip_view : public view_interface<zip_view<Views...>> {
     public:
         static constexpr index_t<std::min({size_v<Views>...})> size{};
 
-        constexpr explicit zip_view(Views... views) noexcept(std::is_nothrow_constructible_v<bases_t, Views&&...>) :
+        constexpr explicit zip_view(Views... views) :
             bases_(std::move(views)...) {}
 
         template <std::size_t Idx, typename Self>

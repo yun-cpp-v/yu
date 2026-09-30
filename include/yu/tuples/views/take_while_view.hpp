@@ -13,7 +13,6 @@
 #include <yu/tuples/concepts/tuple.hpp>
 #include <yu/tuples/concepts/view.hpp>
 #include <yu/tuples/type_traits/element_type.hpp>
-#include <type_traits>
 #include <utility>
 
 namespace yu::tuples {
@@ -27,7 +26,7 @@ class take_while_view :
         using base_t = _detail::take_view_base<View, _detail::prefix_size<View, Pred>>;
 
     public:
-        constexpr explicit take_while_view(View view, Pred) noexcept(std::is_nothrow_constructible_v<base_t, View&&>) :
+        constexpr explicit take_while_view(View view, Pred) :
             base_t(std::move(view)) {}
 };
 

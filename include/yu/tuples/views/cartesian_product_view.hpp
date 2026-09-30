@@ -16,7 +16,6 @@
 #include <array>
 #include <ranges>
 #include <tuple>
-#include <type_traits>
 #include <utility>
 
 namespace yu::tuples {
@@ -27,8 +26,7 @@ class cartesian_product_view : public view_interface<cartesian_product_view<View
     private:
         static consteval auto make_indices_table() {
             constexpr auto result = [] consteval {
-                auto indices_table_view
-                    = std::views::cartesian_product(std::views::iota(0uz, size_v<Views>)...);
+                auto indices_table_view = std::views::cartesian_product(std::views::iota(0uz, size_v<Views>)...);
 
                 using indices_t            = std::array<std::size_t, sizeof...(Views)>;
                 constexpr std::size_t size = (size_v<Views> * ... * 1);
@@ -76,9 +74,7 @@ class cartesian_product_view : public view_interface<cartesian_product_view<View
     public:
         static constexpr auto size = meta::constant_invoke(meta::constant<&indices_table_t::size>, indices_table_);
 
-        constexpr explicit cartesian_product_view(
-            Views... views
-        ) noexcept(std::is_nothrow_constructible_v<bases_t, Views&&...>) :
+        constexpr explicit cartesian_product_view(Views... views) :
             bases_(std::move(views)...) {}
 
         template <std::size_t Idx, typename Self>

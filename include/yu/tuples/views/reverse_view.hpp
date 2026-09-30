@@ -8,7 +8,6 @@
 #include <yu/tuples/concepts/tuple.hpp>
 #include <yu/tuples/concepts/view.hpp>
 #include <yu/tuples/type_traits/element_type.hpp>
-#include <type_traits>
 #include <utility>
 
 namespace yu::tuples {
@@ -21,7 +20,7 @@ class reverse_view : public view_interface<reverse_view<View>> {
     public:
         static constexpr size<View> size{};
 
-        constexpr explicit reverse_view(View view) noexcept(std::is_nothrow_move_constructible_v<View>) :
+        constexpr explicit reverse_view(View view) :
             base_(std::move(view)) {}
 
         template <typename Self>

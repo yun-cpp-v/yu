@@ -17,7 +17,6 @@
 #include <array>
 #include <cstddef>
 #include <ranges>
-#include <type_traits>
 #include <utility>
 
 namespace yu::tuples {
@@ -53,7 +52,7 @@ class filter_view : public view_interface<filter_view<View, Pred>> {
     public:
         static constexpr auto size = meta::constant_invoke(meta::constant<&index_table_t::size>, index_table_);
 
-        constexpr explicit filter_view(View view, Pred) noexcept(std::is_nothrow_move_constructible_v<View>) :
+        constexpr explicit filter_view(View view, Pred) :
             base_(std::move(view)) {}
 
         template <typename Self>

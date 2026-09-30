@@ -16,7 +16,6 @@
 #include <yu/tuples/type_traits/element_type.hpp>
 #include <array>
 #include <cstddef>
-#include <type_traits>
 #include <utility>
 
 namespace yu::tuples {
@@ -92,7 +91,7 @@ class split_when_view : public view_interface<split_when_view<View, Pred>> {
     public:
         static constexpr auto size = meta::constant_invoke(meta::constant<&index_ranges_t::count>, index_ranges_);
 
-        constexpr explicit split_when_view(View view, Pred) noexcept(std::is_nothrow_move_constructible_v<View>) :
+        constexpr explicit split_when_view(View view, Pred) :
             base_(std::move(view)) {}
 
         template <typename Self>

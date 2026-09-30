@@ -10,9 +10,8 @@
 #include <yu/tuples/type_traits/is_gettable.hpp>
 #include <yu/tuples/utility/index_sequence_for.hpp>
 #include <algorithm>
-#include <cstddef>
 #include <array>
-#include <type_traits>
+#include <cstddef>
 #include <utility>
 
 namespace yu::tuples::_detail {
@@ -68,7 +67,7 @@ class flatten_view_base {
     public:
         static constexpr auto size = meta::constant_invoke(meta::constant<&index_map_t::size>, index_map_);
 
-        constexpr explicit flatten_view_base(Base base) noexcept(std::is_nothrow_move_constructible_v<Base>) :
+        constexpr explicit flatten_view_base(Base base) :
             base_(std::move(base)) {}
 
         template <std::size_t Idx, typename Self>

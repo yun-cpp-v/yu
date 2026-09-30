@@ -20,7 +20,7 @@ class single_view : public view_interface<single_view<T>> {
     public:
         static constexpr index_t<1> size{};
 
-        constexpr explicit single_view(T value) noexcept(std::is_nothrow_move_constructible_v<T>) :
+        constexpr explicit single_view(T value) :
             value_(std::move(value)) {}
 
         template <std::size_t Idx, typename Self>

@@ -63,7 +63,7 @@ class type_adaptor {
         using args_t = std::tuple<Args...>;
 
     public:
-        constexpr explicit type_adaptor(Args... args) noexcept(std::is_nothrow_constructible_v<args_t, Args&&...>) :
+        constexpr explicit type_adaptor(Args... args) :
             args_(std::move(args)...) {}
 
         template <tuple Tuple, typename Adaptor>
@@ -86,7 +86,7 @@ class template_adaptor {
         using args_t = std::tuple<Args...>;
 
     public:
-        constexpr explicit template_adaptor(Args... args) noexcept(std::is_nothrow_constructible_v<args_t, Args&&...>) :
+        constexpr explicit template_adaptor(Args... args) :
             args_(std::move(args)...) {}
 
         template <tuple Tuple, typename Adaptor>

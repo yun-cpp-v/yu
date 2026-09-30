@@ -12,7 +12,6 @@
 #include <yu/tuples/concepts/tuple.hpp>
 #include <yu/tuples/concepts/view.hpp>
 #include <yu/tuples/utility/index_sequence_for.hpp>
-#include <type_traits>
 #include <utility>
 
 namespace yu::tuples {
@@ -24,7 +23,7 @@ class join_view : public _detail::flatten_view_base<View>, public view_interface
         using base_t = _detail::flatten_view_base<View>;
 
     public:
-        constexpr explicit join_view(View view) noexcept(std::is_nothrow_constructible_v<base_t, View&&>) :
+        constexpr explicit join_view(View view) :
             base_t(std::move(view)) {}
 };
 

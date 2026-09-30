@@ -10,7 +10,6 @@
 #include <yu/tuples/concepts/view.hpp>
 #include <yu/tuples/type_traits/element_type.hpp>
 #include <tuple>
-#include <type_traits>
 #include <utility>
 
 namespace yu::tuples {
@@ -23,7 +22,7 @@ class enumerate_view : public view_interface<enumerate_view<View>> {
     public:
         static constexpr size<View> size{};
 
-        constexpr explicit enumerate_view(View view) noexcept(std::is_nothrow_move_constructible_v<View>) :
+        constexpr explicit enumerate_view(View view) :
             base_(std::move(view)) {}
 
         template <typename Self>

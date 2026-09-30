@@ -29,7 +29,7 @@ class ref_view : public view_interface<ref_view<Tuple>> {
         template <typename T>
         requires (!std::same_as<std::remove_cvref_t<T>, ref_view>)
                  && std::convertible_to<T, Tuple&> && requires { bind_lvalue(std::declval<T>()); }
-        constexpr ref_view(T&& tuple) noexcept(std::is_nothrow_convertible_v<T, Tuple&>) :
+        constexpr ref_view(T&& tuple) :
             base_ptr_(std::addressof(static_cast<Tuple&>(std::forward<T>(tuple)))) {}
 
         [[nodiscard]]
