@@ -41,10 +41,12 @@ struct fn {
             } else {
                 constexpr std::size_t size_diff = size1 - size2;
 
+                auto safe_pred = functional::with_fallback(std::ref(pred), false);
+
                 return [&]<std::size_t... Idx>(std::index_sequence<Idx...>) {
                     return (
                         std::invoke(
-                            pred,
+                            safe_pred,
                             std::invoke(proj1, tuples::get(std::forward<Tuple1>(tuple1), index<size_diff + Idx>)),
                             std::invoke(proj2, tuples::get(std::forward<Tuple2>(tuple2), index<Idx>))
                         )
