@@ -65,7 +65,7 @@ class separator_insert_view : public tuples::view_interface<separator_insert_vie
 } // namespace _detail::join_with_view
 
 template <view View, view Pattern>
-requires _detail::tuple_of_tuples<View>
+requires _detail::tuple_of_tuples<View> 
 class join_with_view :
     public _detail::flatten_view_base<_detail::join_with_view::separator_insert_view<View, Pattern>>,
     public view_interface<join_with_view<View, Pattern>> {
@@ -74,11 +74,20 @@ class join_with_view :
         using base_t     = _detail::flatten_view_base<inserter_t>;
 
     public:
-        constexpr explicit join_with_view(View view, Pattern pattern) noexcept(
-            std::is_nothrow_constructible_v<inserter_t, View&&, Pattern&&>
-            && std::is_nothrow_constructible_v<base_t, inserter_t>
-        ) :
+        constexpr explicit join_with_view(View view, Pattern pattern) :
             base_t(inserter_t{std::move(view), std::move(pattern)}) {}
+};
+
+template <view View, view Pattern>
+requires _detail::tuple_of_tuples<View> && (size_v<View> == 0)
+class join_with_view<View, Pattern> : public view_interface<join_with_view<View, Pattern>> {
+    public:
+        static constexpr index_t<0> size{};
+
+        constexpr explicit join_with_view(View, Pattern) noexcept {}
+
+        template <std::size_t Idx, typename Self>
+        constexpr decltype(auto) get(this Self&& self) = delete;
 };
 
 template <typename Tuple, typename Pattern>
@@ -108,7 +117,7 @@ struct adaptor {
         static constexpr auto operator()(Pattern&& pattern) noexcept(
             noexcept(make_partial_closure(adaptor{}, views::all(std::forward<Pattern>(pattern))))
         ) {
-            return make_partial_closure(adaptor{}, views::all(std::forward<Pattern>(pattern)));
+            return make_partial_closure(adaptor{}, std::forward<Pattern>(pattern));
         }
 
         template <typename Pattern>
