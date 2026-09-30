@@ -11,7 +11,7 @@
 #include <yu/tuples/utility/index_sequence_for.hpp>
 #include <algorithm>
 #include <cstddef>
-#include <ranges>
+#include <array>
 #include <type_traits>
 #include <utility>
 
@@ -27,23 +27,17 @@ class flatten_view_base {
 
         static consteval auto make_index_map() {
             constexpr auto result = []<std::size_t... Idx>(std::index_sequence<Idx...>) consteval {
-                auto index_map_view
-                    = std::views::zip_transform(
-                          [](auto&& outer_index, auto&& inner) {
-                              return inner | std::views::transform([outer_index](auto inner_index) {
-                                         return index_pair{outer_index, inner_index};
-                                     });
-                          },
-                          std::array{Idx...},
-                          std::array{std::views::iota(std::size_t{0}, size_v<element_type_t<Idx, Base>>)...}
-                      )
-                      | std::views::join;
-
-                constexpr std::size_t size = (size_v<element_type_t<Idx, Base>> + ...);
+                constexpr std::array  base_indices = {size_v<element_type_t<Idx, Base>>...};
+                constexpr std::size_t size         = (size_v<element_type_t<Idx, Base>> + ...);
 
                 std::array<index_pair, size> index_map;
 
-                std::ranges::move(index_map_view, index_map.begin());
+                std::size_t flat = 0;
+                for (std::size_t base = 0; base < sizeof...(Idx); ++base) {
+                    for (std::size_t inner = 0; inner < base_indices[base]; ++inner) {
+                        index_map[flat++] = {base, inner};
+                    }
+                }
 
                 return index_map;
             }(indices_for<Base>);
@@ -74,9 +68,7 @@ class flatten_view_base {
     public:
         static constexpr auto size = meta::constant_invoke(meta::constant<&index_map_t::size>, index_map_);
 
-        constexpr explicit flatten_view_base(Base base) noexcept(
-            std::is_nothrow_move_constructible_v<Base>
-        ) :
+        constexpr explicit flatten_view_base(Base base) noexcept(std::is_nothrow_move_constructible_v<Base>) :
             base_(std::move(base)) {}
 
         template <std::size_t Idx, typename Self>
