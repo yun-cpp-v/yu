@@ -10,7 +10,6 @@
 #include <yu/tuples/concepts/view.hpp>
 #include <yu/tuples/utility/index_sequence_for.hpp>
 #include <tuple>
-#include <type_traits>
 #include <utility>
 
 namespace yu::tuples {
