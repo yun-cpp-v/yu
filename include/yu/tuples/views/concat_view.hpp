@@ -2,8 +2,8 @@
 #ifndef YU_TUPLES_VIEWS_CONCAT_VIEW_HPP_
 #define YU_TUPLES_VIEWS_CONCAT_VIEW_HPP_
 
-#include "_detail/flatten_view_base.hpp"
 #include "all.hpp"
+#include "join_view.hpp"
 #include "view_interface.hpp"
 #include <yu/tuples/access/index.hpp>
 #include <yu/tuples/concepts/tuple.hpp>
@@ -16,19 +16,31 @@
 namespace yu::tuples {
 
 template <view... Views>
-class concat_view :
-    public _detail::flatten_view_base<std::tuple<Views...>>,
-    public view_interface<concat_view<Views...>> {
+class concat_view : public view_interface<concat_view<Views...>> {
     private:
         using base_tuple_t = std::tuple<Views...>;
-        using base_t       = _detail::flatten_view_base<base_tuple_t>;
+        using base_t       = join_view<base_tuple_t>;
+
+        base_t base_;
+
+        template <typename Self>
+        [[nodiscard]]
+        constexpr decltype(auto) base(this Self&& self) noexcept {
+            return std::forward_like<Self>(self.base_);
+        }
 
     public:
-        constexpr explicit concat_view(Views... views) noexcept(
-            std::is_nothrow_constructible_v<base_tuple_t, Views&&...>
-            && std::is_nothrow_constructible_v<base_t, base_tuple_t>
-        ) :
-            base_t(base_tuple_t{std::move(views)...}) {}
+        static constexpr auto size = base_t::size;
+
+        constexpr explicit concat_view(Views... views) :
+            base_(base_tuple_t{std::move(views)...}) {}
+
+        template <std::size_t Idx, typename Self>
+        requires (Idx < size)
+        [[nodiscard]]
+        constexpr decltype(auto) get(this Self&& self) noexcept(noexcept(tuples::get(self.base(), index<Idx>))) {
+            return tuples::get(self.base(), index<Idx>);
+        }
 };
 
 template <typename... Tuples>

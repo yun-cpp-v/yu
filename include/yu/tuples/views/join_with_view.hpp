@@ -2,9 +2,10 @@
 #ifndef YU_TUPLES_VIEWS_JOIN_WITH_VIEW_HPP_
 #define YU_TUPLES_VIEWS_JOIN_WITH_VIEW_HPP_
 
-#include "_detail/flatten_view_base.hpp"
 #include "_detail/tuple_of_tuples.hpp"
 #include "all.hpp"
+#include "empty_view.hpp"
+#include "join_view.hpp"
 #include "partial_closure.hpp"
 #include "single_view.hpp"
 #include "view_interface.hpp"
@@ -41,9 +42,7 @@ class separator_insert_view : public tuples::view_interface<separator_insert_vie
     public:
         static constexpr index_t<2 * size_v<View> - 1> size{};
 
-        constexpr explicit separator_insert_view(View view, Pattern pattern) noexcept(
-            std::is_nothrow_move_constructible_v<View> && std::is_nothrow_move_constructible_v<Pattern>
-        ) :
+        constexpr explicit separator_insert_view(View view, Pattern pattern) :
             base_(view), pattern_(pattern) {}
 
         template <typename Self>
@@ -66,28 +65,34 @@ class separator_insert_view : public tuples::view_interface<separator_insert_vie
 
 template <view View, view Pattern>
 requires _detail::tuple_of_tuples<View>
-class join_with_view :
-    public _detail::flatten_view_base<_detail::join_with_view::separator_insert_view<View, Pattern>>,
-    public view_interface<join_with_view<View, Pattern>> {
+class join_with_view : public view_interface<join_with_view<View, Pattern>> {
     private:
         using inserter_t = _detail::join_with_view::separator_insert_view<View, Pattern>;
-        using base_t     = _detail::flatten_view_base<inserter_t>;
+        using base_t     = std::conditional_t<size_v<View> == 0, empty_view, join_view<inserter_t>>;
+
+        base_t base_;
+
+        template <typename Self>
+        [[nodiscard]]
+        constexpr decltype(auto) base(this Self&& self) noexcept {
+            return std::forward_like<Self>(self.base_);
+        }
 
     public:
+        static constexpr auto size = base_t::size;
+
         constexpr explicit join_with_view(View view, Pattern pattern) :
-            base_t(inserter_t{std::move(view), std::move(pattern)}) {}
-};
+            base_(inserter_t{std::move(view), std::move(pattern)}) {}
 
-template <view View, view Pattern>
-requires _detail::tuple_of_tuples<View> && (size_v<View> == 0)
-class join_with_view<View, Pattern> : public view_interface<join_with_view<View, Pattern>> {
-    public:
-        static constexpr index_t<0> size{};
-
-        constexpr explicit join_with_view(View, Pattern) noexcept {}
+        constexpr explicit join_with_view(View, Pattern) requires (size_v<View> == 0)
+        {}
 
         template <std::size_t Idx, typename Self>
-        constexpr decltype(auto) get(this Self&& self) = delete;
+        requires (Idx < size)
+        [[nodiscard]]
+        constexpr decltype(auto) get(this Self&& self) noexcept(noexcept(tuples::get(self.base(), index<Idx>))) {
+            return tuples::get(self.base(), index<Idx>);
+        }
 };
 
 template <typename Tuple, typename Pattern>
