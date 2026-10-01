@@ -3,9 +3,9 @@
 #define YU_TUPLES_VIEWS_TAKE_WHILE_VIEW_HPP_
 
 #include "_detail/prefix_size.hpp"
-#include "_detail/take_view_base.hpp"
 #include "all.hpp"
 #include "partial_closure.hpp"
+#include "take_view.hpp"
 #include "view_interface.hpp"
 #include <yu/meta/concepts/predicate.hpp>
 #include <yu/meta/type.hpp>
@@ -19,15 +19,30 @@ namespace yu::tuples {
 
 template <view View, typename Pred>
 requires elementwise_meta_predicate<Pred, View>
-class take_while_view :
-    public _detail::take_view_base<View, _detail::prefix_size<View, Pred>>,
-    public view_interface<take_while_view<View, Pred>> {
+class take_while_view : public view_interface<take_while_view<View, Pred>> {
     private:
-        using base_t = _detail::take_view_base<View, _detail::prefix_size<View, Pred>>;
+        using base_t = take_view<View, _detail::prefix_size<View, Pred>>;
+
+        base_t base_;
+
+        template <typename Self>
+        [[nodiscard]]
+        constexpr decltype(auto) base(this Self&& self) noexcept {
+            return std::forward_like<Self>(self.base_);
+        }
 
     public:
+        static constexpr auto size = base_t::size;
+
         constexpr explicit take_while_view(View view, Pred) :
-            base_t(std::move(view)) {}
+            base_(std::move(view)) {}
+
+        template <std::size_t Idx, typename Self>
+        requires (Idx < size)
+        [[nodiscard]]
+        constexpr decltype(auto) get(this Self&& self) noexcept(noexcept(tuples::get(self.base(), index<Idx>))) {
+            return tuples::get(self.base(), index<Idx>);
+        }
 };
 
 template <typename Tuple, typename Pred>
