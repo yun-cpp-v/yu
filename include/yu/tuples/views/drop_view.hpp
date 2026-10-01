@@ -23,17 +23,16 @@ class drop_view : public view_interface<drop_view<View, Count>> {
         static constexpr size<View>                           base_size_{};
         static constexpr index_t<std::min(Count, base_size_)> drop_count_{};
 
+        template <typename Self>
+        constexpr decltype(auto) base(this Self&& self) noexcept {
+            return std::forward_like<Self>(self.base_);
+        }
+
     public:
         static constexpr auto size = base_size_ - drop_count_;
 
         constexpr explicit drop_view(View view) :
             base_(std::move(view)) {}
-
-        template <typename Self>
-        [[nodiscard]]
-        constexpr decltype(auto) base(this Self&& self) noexcept {
-            return std::forward_like<Self>(self.base_);
-        }
 
         template <std::size_t Idx, typename Self>
         requires (Idx < size)

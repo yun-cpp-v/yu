@@ -17,22 +17,21 @@ namespace yu::tuples {
 template <view View, std::size_t Count>
 class take_view : public view_interface<take_view<View, Count>> {
     private:
-        View base_;
-
         static constexpr auto base_size_  = tuples::size<View>{};
         static constexpr auto take_count_ = index<(base_size_ < Count ? base_size_ : Count)>;
+
+        View base_;
+
+        template <typename Self>
+        constexpr decltype(auto) base(this Self&& self) noexcept {
+            return std::forward_like<Self>(self.base_);
+        }
 
     public:
         static constexpr auto size = take_count_;
 
         constexpr explicit take_view(View view) :
             base_(std::move(view)) {}
-
-        template <typename Self>
-        [[nodiscard]]
-        constexpr decltype(auto) base(this Self&& self) noexcept {
-            return std::forward_like<Self>(self.base_);
-        }
 
         template <std::size_t Idx, typename Self>
         requires (Idx < size)

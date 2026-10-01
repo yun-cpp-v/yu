@@ -17,17 +17,16 @@ class reverse_view : public view_interface<reverse_view<View>> {
     private:
         View base_;
 
+        template <typename Self>
+        constexpr decltype(auto) base(this Self&& self) noexcept {
+            return std::forward_like<Self>(self.base_);
+        }
+
     public:
         static constexpr size<View> size{};
 
         constexpr explicit reverse_view(View view) :
             base_(std::move(view)) {}
-
-        template <typename Self>
-        [[nodiscard]]
-        constexpr decltype(auto) base(this Self&& self) noexcept {
-            return std::forward_like<Self>(self.base_);
-        }
 
         template <std::size_t Idx, typename Self>
         requires (Idx < size)

@@ -16,17 +16,16 @@ class owning_view : public view_interface<owning_view<Tuple>> {
     private:
         Tuple base_;
 
+        template <typename Self>
+        constexpr decltype(auto) base(this Self&& self) noexcept {
+            return std::forward_like<Self>(self.base_);
+        }
+
     public:
         static constexpr size<Tuple> size{};
 
         constexpr owning_view(Tuple&& tuple) :
             base_(std::move(tuple)) {}
-
-        template <typename Self>
-        [[nodiscard]]
-        constexpr decltype(auto) base(this Self&& self) noexcept {
-            return std::forward_like<Self>(self.base_);
-        }
 
         template <std::size_t Idx, typename Self>
         requires (Idx < size)

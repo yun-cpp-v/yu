@@ -75,6 +75,11 @@ class split_when_view : public view_interface<split_when_view<View, Pred>> {
 
         View base_;
 
+        template <typename Self>
+        constexpr decltype(auto) base(this Self&& self) noexcept {
+            return std::forward_like<Self>(self.base_);
+        }
+
         template <std::size_t Idx, typename Self>
         static consteval bool is_nothrow() {
             constexpr auto index_range = ranges_[index<Idx>];
@@ -93,12 +98,6 @@ class split_when_view : public view_interface<split_when_view<View, Pred>> {
 
         constexpr explicit split_when_view(View view, Pred) :
             base_(std::move(view)) {}
-
-        template <typename Self>
-        [[nodiscard]]
-        constexpr decltype(auto) base(this Self&& self) noexcept {
-            return std::forward_like<Self>(self.base_);
-        }
 
         template <std::size_t Idx, typename Self>
         requires (Idx < size)

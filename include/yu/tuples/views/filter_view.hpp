@@ -49,17 +49,16 @@ class filter_view : public view_interface<filter_view<View, Pred>> {
 
         View base_;
 
+        template <typename Self>
+        constexpr decltype(auto) base(this Self&& self) noexcept {
+            return std::forward_like<Self>(self.base_);
+        }
+
     public:
         static constexpr auto size = meta::constant_invoke(meta::constant<&index_table_t::size>, index_table_);
 
         constexpr explicit filter_view(View view, Pred) :
             base_(std::move(view)) {}
-
-        template <typename Self>
-        [[nodiscard]]
-        constexpr decltype(auto) base(this Self&& self) noexcept {
-            return std::forward_like<Self>(self.base_);
-        }
 
         template <std::size_t Idx, typename Self>
         requires (Idx < size)

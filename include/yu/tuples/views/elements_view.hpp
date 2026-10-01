@@ -33,14 +33,13 @@ class elements_view : public view_interface<elements_view<View, N>> {
     private:
         View base_;
 
-    public:
-        static constexpr size<View> size{};
-
         template <typename Self>
-        [[nodiscard]]
         constexpr decltype(auto) base(this Self&& self) noexcept {
             return std::forward_like<Self>(self.base_);
         }
+
+    public:
+        static constexpr size<View> size{};
 
         constexpr explicit elements_view(View view, index_t<N>) :
             base_(std::move(view)) {}

@@ -30,6 +30,11 @@ class separator_insert_view : public tuples::view_interface<separator_insert_vie
         View    base_;
         Pattern pattern_;
 
+        template <typename Self>
+        constexpr decltype(auto) base(this Self&& self) noexcept {
+            return std::forward_like<Self>(self.base_);
+        }
+
         template <std::size_t Idx, typename Self>
         static consteval bool is_nothrow() {
             if constexpr (Idx % 2 == 0) {
@@ -44,11 +49,6 @@ class separator_insert_view : public tuples::view_interface<separator_insert_vie
 
         constexpr explicit separator_insert_view(View view, Pattern pattern) :
             base_(view), pattern_(pattern) {}
-
-        template <typename Self>
-        constexpr decltype(auto) base(this Self&& self) noexcept {
-            return std::forward_like<Self>(self.base_);
-        }
 
         template <std::size_t Idx, typename Self>
         requires (Idx < size)
@@ -73,7 +73,6 @@ class join_with_view : public view_interface<join_with_view<View, Pattern>> {
         base_t base_;
 
         template <typename Self>
-        [[nodiscard]]
         constexpr decltype(auto) base(this Self&& self) noexcept {
             return std::forward_like<Self>(self.base_);
         }

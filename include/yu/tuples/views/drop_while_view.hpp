@@ -26,7 +26,6 @@ class drop_while_view : public view_interface<drop_while_view<View, Pred>> {
         base_t base_;
 
         template <typename Self>
-        [[nodiscard]]
         constexpr decltype(auto) base(this Self&& self) noexcept {
             return std::forward_like<Self>(self.base_);
         }

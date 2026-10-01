@@ -25,6 +25,11 @@ class transform_view : public view_interface<transform_view<View, Fn>> {
         Fn fn_;
 
         template <typename Self>
+        constexpr decltype(auto) base(this Self&& self) noexcept {
+            return std::forward_like<Self>(self.base_);
+        }
+
+        template <typename Self>
         constexpr decltype(auto) fn(this Self&& self) noexcept {
             return std::forward_like<Self>(self.fn_);
         }
@@ -38,12 +43,6 @@ class transform_view : public view_interface<transform_view<View, Fn>> {
             std::is_nothrow_move_constructible_v<View> && std::is_nothrow_constructible_v<Fn, F&&>
         ) :
             base_(std::move(view)), fn_(std::forward<F>(fn)) {}
-
-        template <typename Self>
-        [[nodiscard]]
-        constexpr decltype(auto) base(this Self&& self) noexcept {
-            return std::forward_like<Self>(self.base_);
-        }
 
         template <std::size_t Idx, typename Self>
         requires (Idx < size)
