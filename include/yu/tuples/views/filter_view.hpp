@@ -64,9 +64,9 @@ class filter_view : public view_interface<filter_view<View, Pred>> {
         requires (Idx < size)
         [[nodiscard]]
         constexpr decltype(auto) get(this Self&& self) noexcept(
-            noexcept(tuples::get(self.base(), index_table_[index<Idx>]))
+            noexcept(tuples::get(std::forward<Self>(self).base(), index_table_[index<Idx>]))
         ) {
-            return tuples::get(self.base(), index_table_[index<Idx>]);
+            return tuples::get(std::forward<Self>(self).base(), index_table_[index<Idx>]);
         }
 };
 

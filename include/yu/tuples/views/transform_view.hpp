@@ -48,9 +48,9 @@ class transform_view : public view_interface<transform_view<View, Fn>> {
         requires (Idx < size)
         [[nodiscard]]
         constexpr decltype(auto) get(this Self&& self) noexcept(
-            noexcept(std::invoke(self.fn(), tuples::get(self.base(), index<Idx>)))
+            noexcept(std::invoke(std::forward<Self>(self).fn(), tuples::get(std::forward<Self>(self).base(), index<Idx>)))
         ) {
-            return std::invoke(self.fn(), tuples::get(self.base(), index<Idx>));
+            return std::invoke(std::forward<Self>(self).fn(), tuples::get(std::forward<Self>(self).base(), index<Idx>));
         }
 };
 

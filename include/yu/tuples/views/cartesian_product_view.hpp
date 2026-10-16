@@ -57,9 +57,9 @@ class cartesian_product_view : public view_interface<cartesian_product_view<View
 
         template <std::size_t Idx, typename Self>
         constexpr decltype(auto) base(this Self&& self, index_t<Idx> idx) noexcept(
-            noexcept(tuples::get(self.bases(), idx))
+            noexcept(tuples::get(std::forward<Self>(self).bases(), idx))
         ) {
-            return tuples::get(self.bases(), idx);
+            return tuples::get(std::forward<Self>(self).bases(), idx);
         }
 
         template <std::size_t Idx, typename Self>
@@ -83,7 +83,9 @@ class cartesian_product_view : public view_interface<cartesian_product_view<View
             constexpr auto indices = indices_table_[index<Idx>];
 
             return [&]<std::size_t... Dims>(std::index_sequence<Dims...>) {
-                return std::forward_as_tuple(tuples::get(self.base(index<Dims>), indices[index<Dims>])...);
+                return std::forward_as_tuple(
+                    tuples::get(std::forward<Self>(self).base(index<Dims>), indices[index<Dims>])...
+                );
             }(std::index_sequence_for<Views...>{});
         }
 };

@@ -2,7 +2,6 @@
 #ifndef YU_TUPLES_VIEWS_ALL_HPP_
 #define YU_TUPLES_VIEWS_ALL_HPP_
 
-#include "_detail/adaptor_closure.hpp"
 #include "owning_view.hpp"
 #include "ref_view.hpp"
 #include "tuple_adaptor_closure.hpp"
@@ -66,23 +65,6 @@ template <tuple Tuple>
 using all_t = decltype(all(std::declval<Tuple>()));
 
 } // namespace views
-
-template <_detail::adaptor_closure Closure>
-[[nodiscard]]
-constexpr decltype(auto) operator|(const decltype(views::all)&, Closure&& closure) noexcept {
-    return std::forward<Closure>(closure);
-}
-
-template <_detail::adaptor_closure Closure>
-[[nodiscard]]
-constexpr decltype(auto) operator|(Closure&& closure, const decltype(views::all)&) noexcept {
-    return std::forward<Closure>(closure);
-}
-
-[[nodiscard]]
-constexpr auto operator|(const decltype(views::all)&, const decltype(views::all)&) noexcept {
-    return views::all;
-}
 
 } // namespace yu::tuples
 

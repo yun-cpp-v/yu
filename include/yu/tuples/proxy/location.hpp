@@ -9,7 +9,6 @@
 #include <array>
 #include <cstddef>
 #include <functional>
-#include <type_traits>
 #include <utility>
 #include <variant>
 
@@ -54,9 +53,12 @@ class location {
         constexpr decltype(auto) visit(this Self&& self, Visitor&& visitor) {
             return std::visit(
                 [&]<std::size_t Idx>(index_t<Idx> idx) -> decltype(auto) {
-                    return std::invoke(std::forward<Visitor>(visitor), tuples::get(self.base(), idx));
+                    return std::invoke(
+                        std::forward<Visitor>(visitor),
+                        tuples::get(std::forward<Self>(self).base(), idx)
+                    );
                 },
-                index_variant_table_[self.index_]
+                index_variant_table_[self.index()]
             );
         }
 };

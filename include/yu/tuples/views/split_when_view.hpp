@@ -110,7 +110,7 @@ class split_when_view : public view_interface<split_when_view<View, Pred>> {
             constexpr std::size_t end   = meta::constant_invoke(meta::constant<&index_range_t::end>, index_range);
 
             return [&]<std::size_t... I>(std::index_sequence<I...>) -> decltype(auto) {
-                return std::forward_as_tuple(tuples::get(self.base(), index<begin + I>)...);
+                return std::forward_as_tuple(tuples::get(std::forward<Self>(self).base(), index<begin + I>)...);
             }(std::make_index_sequence<end - begin>{});
         }
 };

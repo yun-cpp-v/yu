@@ -38,9 +38,9 @@ class drop_view : public view_interface<drop_view<View, Count>> {
         requires (Idx < size)
         [[nodiscard]]
         constexpr decltype(auto) get(this Self&& self) noexcept(
-            noexcept(tuples::get(self.base(), drop_count_ + index<Idx>))
+            noexcept(tuples::get(std::forward<Self>(self).base(), drop_count_ + index<Idx>))
         ) {
-            return tuples::get(self.base(), drop_count_ + index<Idx>);
+            return tuples::get(std::forward<Self>(self).base(), drop_count_ + index<Idx>);
         }
 };
 

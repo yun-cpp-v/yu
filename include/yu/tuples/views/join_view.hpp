@@ -82,7 +82,7 @@ class join_view : public view_interface<join_view<View>> {
             constexpr auto base_index  = meta::constant_invoke(meta::constant<&index_pair::base_index>, map);
             constexpr auto inner_index = meta::constant_invoke(meta::constant<&index_pair::inner_index>, map);
 
-            return tuples::get(tuples::get(self.base(), base_index), inner_index);
+            return tuples::get(tuples::get(std::forward<Self>(self).base(), base_index), inner_index);
         }
 };
 

@@ -39,8 +39,10 @@ class take_while_view : public view_interface<take_while_view<View, Pred>> {
         template <std::size_t Idx, typename Self>
         requires (Idx < size)
         [[nodiscard]]
-        constexpr decltype(auto) get(this Self&& self) noexcept(noexcept(tuples::get(self.base(), index<Idx>))) {
-            return tuples::get(self.base(), index<Idx>);
+        constexpr decltype(auto) get(this Self&& self) noexcept(
+            noexcept(tuples::get(std::forward<Self>(self).base(), index<Idx>))
+        ) {
+            return tuples::get(std::forward<Self>(self).base(), index<Idx>);
         }
 };
 

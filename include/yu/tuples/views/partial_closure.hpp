@@ -33,16 +33,20 @@ struct partial_closure : tuple_adaptor_closure<partial_closure<Adaptor, Args...>
 
         template <typename Self, std::size_t Idx>
         constexpr decltype(auto) arg(this Self&& self, index_t<Idx> index) noexcept(
-            noexcept(tuples::get(self.args(), index))
+            noexcept(tuples::get(std::forward<Self>(self).args(), index))
         ) {
-            return tuples::get(self.args(), index);
+            return tuples::get(std::forward<Self>(self).args(), index);
         }
 
         template <typename Self, typename Tuple>
         static consteval bool invocable() {
             return []<std::size_t... Idx>(std::index_sequence<Idx...>) {
                 return requires(Self&& self, Tuple&& tuple) {
-                    std::invoke(self.adaptor(), std::forward<Tuple>(tuple), self.arg(index<Idx>)...);
+                    std::invoke(
+                        std::forward<Self>(self).adaptor(),
+                        std::forward<Tuple>(tuple),
+                        std::forward<Self>(self).arg(index<Idx>)...
+                    );
                 };
             }(std::index_sequence_for<Args...>{});
         }
@@ -68,7 +72,11 @@ struct partial_closure : tuple_adaptor_closure<partial_closure<Adaptor, Args...>
         requires (invocable<Self, Tuple>())
         constexpr decltype(auto) operator()(this Self&& self, Tuple&& tuple) noexcept(is_nothrow<Self, Tuple>()) {
             return [&]<std::size_t... Idx>(std::index_sequence<Idx...>) {
-                return std::invoke(self.adaptor(), std::forward<Tuple>(tuple), self.arg(index<Idx>)...);
+                return std::invoke(
+                    std::forward<Self>(self).adaptor(),
+                    std::forward<Tuple>(tuple),
+                    std::forward<Self>(self).arg(index<Idx>)...
+                );
             }(std::index_sequence_for<Args...>{});
         }
 };

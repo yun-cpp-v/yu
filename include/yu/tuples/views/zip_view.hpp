@@ -30,9 +30,9 @@ class zip_view : public view_interface<zip_view<Views...>> {
 
         template <std::size_t Idx, typename Self>
         constexpr decltype(auto) base(this Self&& self, index_t<Idx> idx) noexcept(
-            noexcept(tuples::get(self.bases(), idx))
+            noexcept(tuples::get(std::forward<Self>(self).bases(), idx))
         ) {
-            return tuples::get(self.bases(), idx);
+            return tuples::get(std::forward<Self>(self).bases(), idx);
         }
 
         template <std::size_t Idx, typename Self>
@@ -52,7 +52,7 @@ class zip_view : public view_interface<zip_view<Views...>> {
         requires (Idx < size)
         constexpr decltype(auto) get(this Self&& self) noexcept(is_nothrow<Idx, Self>()) {
             return [&]<std::size_t... Is>(std::index_sequence<Is...>) {
-                return std::forward_as_tuple(tuples::get(self.base(index<Is>), index<Idx>)...);
+                return std::forward_as_tuple(tuples::get(std::forward<Self>(self).base(index<Is>), index<Idx>)...);
             }(std::index_sequence_for<Views...>{});
         }
 };
