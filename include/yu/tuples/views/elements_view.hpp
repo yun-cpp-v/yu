@@ -46,8 +46,7 @@ class elements_view : public view_interface<elements_view<View, N>> {
 
         template <std::size_t Idx, typename Self>
         requires (Idx < size)
-        [[nodiscard]]
-        constexpr decltype(auto) get(this Self&& self) noexcept(
+                constexpr decltype(auto) get(this Self&& self) noexcept(
             noexcept(tuples::get(tuples::get(std::forward<Self>(self).base(), index<Idx>), index<N>))
         ) {
             return tuples::get(tuples::get(std::forward<Self>(self).base(), index<Idx>), index<N>);

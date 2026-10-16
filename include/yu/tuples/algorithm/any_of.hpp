@@ -17,8 +17,7 @@ struct fn {
     public:
         template <tuple Tuple, typename Pred, typename Proj = std::identity>
         requires elementwise_unary_predicate<Pred, projected<Tuple, Proj>>
-        [[nodiscard]]
-        static constexpr bool operator()(Tuple&& tuple, Pred pred, Proj proj = {}) {
+                static constexpr bool operator()(Tuple&& tuple, Pred pred, Proj proj = {}) {
             return tuples::apply(
                 [&]<typename... Elems>(Elems&&... elems) {
                     return (std::invoke(pred, std::invoke(proj, std::forward<Elems>(elems))) || ...);

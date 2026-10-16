@@ -47,8 +47,7 @@ struct fn {
     public:
         template <std::size_t Idx, typename T>
         requires _detail::get::gettable<Idx, T>
-        [[nodiscard]]
-        static constexpr decltype(auto) operator()(T&& t, index_t<Idx>) noexcept(is_nothrow<Idx, T>()) {
+                static constexpr decltype(auto) operator()(T&& t, index_t<Idx>) noexcept(is_nothrow<Idx, T>()) {
             if constexpr (std::is_bounded_array_v<std::remove_cvref_t<T>>) {
                 return std::forward<T>(t)[Idx];
             } else if constexpr (_detail::get::member_gettable<Idx, T>) {

@@ -27,8 +27,7 @@ struct fn {
             typename Proj1 = std::identity,
             typename Proj2 = std::identity
         >
-        [[nodiscard]]
-        static constexpr bool operator()(
+                static constexpr bool operator()(
             Tuple1&& tuple1,
             Tuple2&& tuple2,
             Pred     pred  = {},

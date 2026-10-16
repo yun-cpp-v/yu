@@ -28,8 +28,7 @@ struct fn {
             typename Pred = functional::safe_equal_to,
             typename Proj = std::identity
         >
-        [[nodiscard]]
-        static constexpr std::optional<std::size_t> operator()(
+                static constexpr std::optional<std::size_t> operator()(
             Tuple&&  tuple,
             const T& value,
             index_t<Count>,

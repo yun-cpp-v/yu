@@ -25,8 +25,7 @@ class repeat_view : public view_interface<repeat_view<T, Count>> {
 
         template <std::size_t Idx, typename Self>
         requires (Idx < size)
-        [[nodiscard]]
-        constexpr decltype(auto) get(this Self&& self) noexcept {
+                constexpr decltype(auto) get(this Self&& self) noexcept {
             return std::forward_like<Self>(self.value_);
         }
 };
@@ -41,8 +40,7 @@ namespace _unspecified::repeat {
 struct fn {
         template <std::move_constructible T, std::size_t Size>
         requires std::is_object_v<T>
-        [[nodiscard]]
-        static constexpr decltype(auto) operator()(T&& value, index_t<Size> index) noexcept(
+                static constexpr decltype(auto) operator()(T&& value, index_t<Size> index) noexcept(
             noexcept(repeat_view{std::forward<T>(value), index})
         ) {
             return repeat_view{std::forward<T>(value), index};

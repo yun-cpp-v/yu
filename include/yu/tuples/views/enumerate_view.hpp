@@ -32,8 +32,7 @@ class enumerate_view : public view_interface<enumerate_view<View>> {
 
         template <std::size_t Idx, typename Self>
         requires (Idx < size)
-        [[nodiscard]]
-        constexpr decltype(auto) get(this Self&& self) noexcept(
+                constexpr decltype(auto) get(this Self&& self) noexcept(
             noexcept(tuples::get(std::forward<Self>(self).base(), index<Idx>))
         ) {
             using result_t

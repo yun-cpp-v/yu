@@ -18,8 +18,7 @@ namespace _unspecified::find_last_if_not {
 struct fn {
     public:
         template <tuple Tuple, typename Pred, typename Proj = std::identity>
-        [[nodiscard]]
-        static constexpr std::optional<std::size_t> operator()(Tuple&& tuple, Pred pred, Proj proj = {}) {
+                static constexpr std::optional<std::size_t> operator()(Tuple&& tuple, Pred pred, Proj proj = {}) {
             return tuples::find_last_if(
                 std::forward<Tuple>(tuple),
                 std::not_fn(functional::with_fallback(std::ref(pred), false)),

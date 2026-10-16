@@ -23,7 +23,6 @@
                                                                                                     \
     struct fn {                                                                                     \
             template <typename T>                                                                   \
-            [[nodiscard]]                                                                           \
             static constexpr auto operator()(type_t<T>) noexcept -> RESULT<std::NAME##POSTFIX<T>> { \
                 return {};                                                                          \
             }                                                                                       \
@@ -39,7 +38,6 @@
                                                                                                                   \
     struct fn {                                                                                                   \
             template <typename T, typename U>                                                                     \
-            [[nodiscard]]                                                                                         \
             static constexpr auto operator()(type_t<T>, type_t<U>) noexcept -> RESULT<std::NAME##POSTFIX<T, U>> { \
                 return {};                                                                                        \
             }                                                                                                     \
@@ -55,7 +53,6 @@
                                                                                        \
     struct fn {                                                                        \
             template <typename T, typename U, typename V>                              \
-            [[nodiscard]]                                                              \
             static constexpr auto operator()(type_t<T>, type_t<U>, type_t<V>) noexcept \
                 -> RESULT<std::NAME##POSTFIX<T, U, V>> {                               \
                 return {};                                                             \
@@ -72,7 +69,6 @@
                                                                                 \
     struct fn {                                                                 \
             template <typename T, typename... Ts>                               \
-            [[nodiscard]]                                                       \
             static constexpr auto operator()(type_t<T>, type_t<Ts>...) noexcept \
                 -> RESULT<std::NAME##POSTFIX<T, Ts...>> {                       \
                 return {};                                                      \
@@ -89,7 +85,6 @@
                                                                                            \
     struct fn {                                                                            \
             template <typename T, typename U, typename... Ts>                              \
-            [[nodiscard]]                                                                  \
             static constexpr auto operator()(type_t<T>, type_t<U>, type_t<Ts>...) noexcept \
                 -> RESULT<std::NAME##POSTFIX<T, U, Ts...>> {                               \
                 return {};                                                                 \
@@ -106,7 +101,6 @@
                                                                                                             \
     struct fn {                                                                                             \
             template <typename... Ts>                                                                       \
-            [[nodiscard]]                                                                                   \
             static constexpr auto operator()(type_t<Ts>...) noexcept -> RESULT<std::NAME##POSTFIX<Ts...>> { \
                 return {};                                                                                  \
             }                                                                                               \

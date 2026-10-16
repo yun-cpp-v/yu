@@ -15,8 +15,7 @@ namespace _unspecified::locate {
 
 struct fn {
         template <tuple Tuple, typename T, typename Proj = std::identity>
-        [[nodiscard]]
-        static constexpr decltype(auto) operator()(Tuple&& tuple, const T& value, Proj proj = {}) {
+                static constexpr decltype(auto) operator()(Tuple&& tuple, const T& value, Proj proj = {}) {
             auto&& result = tuples::find(std::forward<Tuple>(tuple), value, std::ref(proj));
 
             return result.transform([&](std::size_t index) { return location{std::forward<Tuple>(tuple), index}; });

@@ -18,8 +18,7 @@ struct fn {
     public:
         template <tuple Tuple, typename Pred, typename Proj = std::identity>
         requires elementwise_unary_predicate<functional::with_fallback_t<Pred, bool>, projected<Tuple, Proj>>
-        [[nodiscard]]
-        static constexpr std::size_t operator()(Tuple&& tuple, Pred pred, Proj proj = {}) {
+                static constexpr std::size_t operator()(Tuple&& tuple, Pred pred, Proj proj = {}) {
             auto safe_pred = functional::with_fallback(std::ref(pred), false);
 
             return tuples::apply(

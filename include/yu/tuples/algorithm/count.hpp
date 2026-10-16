@@ -17,8 +17,7 @@ namespace _unspecified::count {
 struct fn {
     public:
         template <tuple Tuple, typename T, typename Proj = std::identity>
-        [[nodiscard]]
-        static constexpr std::size_t operator()(Tuple&& tuple, const T& value, Proj proj = {}) {
+                static constexpr std::size_t operator()(Tuple&& tuple, const T& value, Proj proj = {}) {
             return tuples::count_if(
                 std::forward<Tuple>(tuple),
                 std::bind_back(functional::safe_equal_to{}, value),

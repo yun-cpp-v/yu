@@ -40,13 +40,11 @@ constexpr Ret impl(Tuple&& tuple, Args&&... args) {
 
 template <typename Ret, tuple Tuple, typename... Args>
 requires constructible_from_elements<Ret, Tuple, Args...> && (!view<Ret>)
-[[nodiscard]]
 constexpr Ret construct(Tuple&& tuple, Args&&... args) {
     return _detail::construct::impl<Ret>(std::forward<Tuple>(tuple), std::forward<Args>(args)...);
 }
 
 template <template <typename...> typename RetT, tuple Tuple, typename... Args>
-[[nodiscard]]
 constexpr decltype(auto) construct(Tuple&& tuple, Args&&... args) {
     return _detail::construct::impl<_detail::construct::deduce_from_elements_t<RetT, Tuple, Args...>>(
         std::forward<Tuple>(tuple),
@@ -68,8 +66,7 @@ class type_adaptor {
 
         template <tuple Tuple, typename Adaptor>
         requires std::same_as<std::remove_cvref_t<Adaptor>, type_adaptor<Ret, Args...>>
-        [[nodiscard]]
-        friend constexpr auto operator|(Tuple&& tuple, Adaptor&& adaptor) {
+                friend constexpr auto operator|(Tuple&& tuple, Adaptor&& adaptor) {
             return tuples::apply(
                 [&]<typename... Elems>(Elems&&... elems) {
                     return tuples::construct<Ret>(std::forward<Tuple>(tuple), std::forward<Elems>(elems)...);
@@ -91,8 +88,7 @@ class template_adaptor {
 
         template <tuple Tuple, typename Adaptor>
         requires std::same_as<std::remove_cvref_t<Adaptor>, template_adaptor<RetT, Args...>>
-        [[nodiscard]]
-        friend constexpr auto operator|(Tuple&& tuple, Adaptor&& adaptor) {
+                friend constexpr auto operator|(Tuple&& tuple, Adaptor&& adaptor) {
             return tuples::apply(
                 [&]<typename... Elems>(Elems&&... elems) {
                     return tuples::construct<RetT>(std::forward<Tuple>(tuple), std::forward<Elems>(elems)...);
@@ -105,13 +101,11 @@ class template_adaptor {
 } // namespace _unspecified::construct
 
 template <typename Ret, typename... Args>
-[[nodiscard]]
 constexpr auto construct(Args&&... args) noexcept {
     return _unspecified::construct::type_adaptor<Ret, std::decay_t<Args>...>{std::forward<Args>(args)...};
 }
 
 template <template <typename...> typename RetT, typename... Args>
-[[nodiscard]]
 constexpr auto construct(Args&&... args) noexcept {
     return _unspecified::construct::template_adaptor<RetT, std::decay_t<Args>...>{std::forward<Args>(args)...};
 }

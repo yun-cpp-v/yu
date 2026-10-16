@@ -16,8 +16,7 @@ namespace _unspecified::indices {
 
 struct fn {
         template <std::size_t Size>
-        [[nodiscard]]
-        static constexpr auto operator()(index_t<Size>) noexcept {
+                static constexpr auto operator()(index_t<Size>) noexcept {
             return indices_view<Size>{};
         }
 };

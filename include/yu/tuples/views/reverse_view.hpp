@@ -30,8 +30,7 @@ class reverse_view : public view_interface<reverse_view<View>> {
 
         template <std::size_t Idx, typename Self>
         requires (Idx < size)
-        [[nodiscard]]
-        constexpr decltype(auto) get(this Self&& self) noexcept(
+                constexpr decltype(auto) get(this Self&& self) noexcept(
             noexcept(tuples::get(std::forward<Self>(self).base(), index<size - Idx - 1>))
         ) {
             return tuples::get(std::forward<Self>(self).base(), index<size - Idx - 1>);

@@ -38,19 +38,16 @@ class location {
             view_(std::move(view)), index_(index) {}
 
         template <typename Self>
-        [[nodiscard]]
-        constexpr decltype(auto) base(this Self&& self) noexcept {
+                constexpr decltype(auto) base(this Self&& self) noexcept {
             return std::forward_like<Self>(self.view_);
         }
 
-        [[nodiscard]]
-        constexpr std::size_t index() const noexcept {
+                constexpr std::size_t index() const noexcept {
             return index_;
         }
 
         template <typename Self, typename Visitor>
-        [[nodiscard]]
-        constexpr decltype(auto) visit(this Self&& self, Visitor&& visitor) {
+                constexpr decltype(auto) visit(this Self&& self, Visitor&& visitor) {
             return std::visit(
                 [&]<std::size_t Idx>(index_t<Idx> idx) -> decltype(auto) {
                     return std::invoke(

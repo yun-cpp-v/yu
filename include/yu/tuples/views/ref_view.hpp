@@ -32,15 +32,13 @@ class ref_view : public view_interface<ref_view<Tuple>> {
         constexpr ref_view(T&& tuple) :
             base_ptr_(std::addressof(static_cast<Tuple&>(std::forward<T>(tuple)))) {}
 
-        [[nodiscard]]
-        constexpr Tuple& base() const noexcept {
+                constexpr Tuple& base() const noexcept {
             return *base_ptr_;
         }
 
         template <std::size_t Idx, typename Self>
         requires (Idx < size)
-        [[nodiscard]]
-        constexpr decltype(auto) get(this Self&& self) noexcept(noexcept(tuples::get(self.base(), index<Idx>))) {
+                constexpr decltype(auto) get(this Self&& self) noexcept(noexcept(tuples::get(self.base(), index<Idx>))) {
             return tuples::get(self.base(), index<Idx>);
         }
 };

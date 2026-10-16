@@ -35,8 +35,7 @@ class take_view : public view_interface<take_view<View, Count>> {
 
         template <std::size_t Idx, typename Self>
         requires (Idx < size)
-        [[nodiscard]]
-        constexpr decltype(auto) get(this Self&& self) noexcept(
+                constexpr decltype(auto) get(this Self&& self) noexcept(
             noexcept(tuples::get(std::forward<Self>(self).base(), index<Idx>))
         ) {
             return tuples::get(std::forward<Self>(self).base(), index<Idx>);

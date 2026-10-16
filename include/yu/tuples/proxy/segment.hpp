@@ -37,8 +37,7 @@ class segment_iterator {
         constexpr explicit segment_iterator(const View& view, std::size_t first, std::ptrdiff_t pos) noexcept :
             view_(std::addressof(view)), first_(first), pos_(pos) {}
 
-        [[nodiscard]]
-        constexpr value_type operator*() const noexcept(
+                constexpr value_type operator*() const noexcept(
             std::is_nothrow_constructible_v<value_type, View, std::size_t>
         ) {
             auto idx = static_cast<std::size_t>(static_cast<std::ptrdiff_t>(first_) + pos_);
@@ -46,8 +45,7 @@ class segment_iterator {
             return value_type{*view_, idx};
         }
 
-        [[nodiscard]]
-        constexpr value_type operator[](difference_type n) const noexcept {
+                constexpr value_type operator[](difference_type n) const noexcept {
             return *(*this + n);
         }
 
@@ -83,28 +81,23 @@ class segment_iterator {
             return *this;
         }
 
-        [[nodiscard]]
-        friend constexpr segment_iterator operator+(segment_iterator it, difference_type n) noexcept {
+                friend constexpr segment_iterator operator+(segment_iterator it, difference_type n) noexcept {
             return it += n;
         }
 
-        [[nodiscard]]
-        friend constexpr segment_iterator operator+(difference_type n, segment_iterator it) noexcept {
+                friend constexpr segment_iterator operator+(difference_type n, segment_iterator it) noexcept {
             return it += n;
         }
 
-        [[nodiscard]]
-        friend constexpr segment_iterator operator-(segment_iterator it, difference_type n) noexcept {
+                friend constexpr segment_iterator operator-(segment_iterator it, difference_type n) noexcept {
             return it -= n;
         }
 
-        [[nodiscard]]
-        friend constexpr difference_type operator-(segment_iterator a, segment_iterator b) noexcept {
+                friend constexpr difference_type operator-(segment_iterator a, segment_iterator b) noexcept {
             return a.pos_ - b.pos_;
         }
 
-        [[nodiscard]]
-        friend constexpr auto operator<=>(const segment_iterator& left, const segment_iterator& right) noexcept
+                friend constexpr auto operator<=>(const segment_iterator& left, const segment_iterator& right) noexcept
             = default;
 };
 
@@ -129,33 +122,27 @@ class segment : public std::ranges::view_interface<segment<View>> {
             view_(std::move(view)), first_(first), size_(size) {}
 
         template <typename Self>
-        [[nodiscard]]
-        constexpr decltype(auto) base(this Self&& self) noexcept {
+                constexpr decltype(auto) base(this Self&& self) noexcept {
             return std::forward_like<Self>(self.view_);
         }
 
-        [[nodiscard]]
-        constexpr std::size_t size() const noexcept {
+                constexpr std::size_t size() const noexcept {
             return size_;
         }
 
-        [[nodiscard]]
-        constexpr difference_type ssize() const noexcept {
+                constexpr difference_type ssize() const noexcept {
             return static_cast<difference_type>(size_);
         }
 
-        [[nodiscard]]
-        constexpr iterator begin() const noexcept {
+                constexpr iterator begin() const noexcept {
             return iterator{base(), first_, 0};
         }
 
-        [[nodiscard]]
-        constexpr iterator end() const noexcept {
+                constexpr iterator end() const noexcept {
             return iterator{base(), first_, this->ssize()};
         }
 
-        [[nodiscard]]
-        friend bool operator==(const segment&, const segment&) noexcept = default;
+                friend bool operator==(const segment&, const segment&) noexcept = default;
 };
 
 template <typename Tuple>

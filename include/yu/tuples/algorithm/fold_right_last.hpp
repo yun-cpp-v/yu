@@ -20,8 +20,7 @@ struct fn {
     public:
         template <tuple Tuple, typename Fn>
         requires _detail::right_foldable_last<Fn, Tuple>
-        [[nodiscard]]
-        static constexpr auto operator()(Tuple&& tuple, Fn f) {
+                static constexpr auto operator()(Tuple&& tuple, Fn f) {
             constexpr std::size_t size = size_v<Tuple>;
 
             return [&]<std::size_t... Idx>(std::index_sequence<Idx...>) {

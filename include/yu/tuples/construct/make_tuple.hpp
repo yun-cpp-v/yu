@@ -13,8 +13,7 @@ namespace _unspecified::make_tuple {
 
 struct adaptor {
         template <tuple Tuple>
-        [[nodiscard]]
-        static constexpr decltype(auto) operator()(Tuple&& tuple) {
+                static constexpr decltype(auto) operator()(Tuple&& tuple) {
             return tuples::apply(
                 []<typename... Elems>(Elems&&... elems) { return std::make_tuple(std::forward<Elems>(elems)...); },
                 std::forward<Tuple>(tuple)
@@ -22,8 +21,7 @@ struct adaptor {
         }
 
         template <tuple Tuple>
-        [[nodiscard]]
-        friend constexpr decltype(auto) operator|(Tuple&& tuple, adaptor) noexcept {
+                friend constexpr decltype(auto) operator|(Tuple&& tuple, adaptor) noexcept {
             return operator()(std::forward<Tuple>(tuple));
         }
 };

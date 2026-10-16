@@ -13,8 +13,7 @@ namespace _unspecified::forward_as_tuple {
 
 struct adaptor {
         template <tuple Tuple>
-        [[nodiscard]]
-        static constexpr decltype(auto) operator()(Tuple&& tuple) noexcept {
+                static constexpr decltype(auto) operator()(Tuple&& tuple) noexcept {
             return tuples::apply(
                 []<typename... Elems>(Elems&&... elems) {
                     return std::forward_as_tuple(std::forward<Elems>(elems)...);
@@ -24,8 +23,7 @@ struct adaptor {
         }
 
         template <tuple Tuple>
-        [[nodiscard]]
-        friend constexpr decltype(auto) operator|(Tuple&& tuple, adaptor) noexcept {
+                friend constexpr decltype(auto) operator|(Tuple&& tuple, adaptor) noexcept {
             return operator()(std::forward<Tuple>(tuple));
         }
 };

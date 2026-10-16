@@ -40,8 +40,7 @@ namespace _unspecified::single {
 struct fn {
         template <std::move_constructible T>
         requires std::is_object_v<T>
-        [[nodiscard]]
-        static constexpr decltype(auto) operator()(T&& value) noexcept(noexcept(single_view{std::forward<T>(value)})) {
+                static constexpr decltype(auto) operator()(T&& value) noexcept(noexcept(single_view{std::forward<T>(value)})) {
             return single_view{std::forward<T>(value)};
         }
 };

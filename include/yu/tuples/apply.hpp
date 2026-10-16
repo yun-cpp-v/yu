@@ -19,8 +19,7 @@ namespace _unspecified::apply {
 struct fn {
     public:
         template <typename Fn, tuple Tuple>
-        [[nodiscard]]
-        static constexpr apply_result_t<Fn, Tuple> operator()(Fn&& fn, Tuple&& tup) noexcept(
+                static constexpr apply_result_t<Fn, Tuple> operator()(Fn&& fn, Tuple&& tup) noexcept(
             is_nothrow_applicable_v<Fn, Tuple>
         ) {
             return [&]<std::size_t... Idx>(std::index_sequence<Idx...>) -> decltype(auto) {

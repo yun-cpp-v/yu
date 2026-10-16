@@ -10,8 +10,7 @@ namespace _unspecified::extent {
 
 struct fn {
         template <typename T, unsigned I = 0>
-        [[nodiscard]]
-        static constexpr auto operator()(type_t<T>, constant_t<I>) noexcept -> constant_t<std::extent_v<T, I>> {
+                static constexpr auto operator()(type_t<T>, constant_t<I>) noexcept -> constant_t<std::extent_v<T, I>> {
             return {};
         }
 };

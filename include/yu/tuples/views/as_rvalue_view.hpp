@@ -30,8 +30,7 @@ class as_rvalue_view : public view_interface<as_rvalue_view<View>> {
 
         template <std::size_t Idx, typename Self>
         requires (Idx < size)
-        [[nodiscard]]
-        constexpr decltype(auto) get(this Self&& self) noexcept(noexcept(tuples::get(std::forward<Self>(self).base(), index<Idx>))) {
+                constexpr decltype(auto) get(this Self&& self) noexcept(noexcept(tuples::get(std::forward<Self>(self).base(), index<Idx>))) {
             return std::move(tuples::get(std::forward<Self>(self).base(), index<Idx>));
         }
 };

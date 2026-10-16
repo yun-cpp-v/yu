@@ -16,8 +16,7 @@ namespace _unspecified::contains {
 struct fn {
     public:
         template <tuple Tuple, typename T, typename Proj = std::identity>
-        [[nodiscard]]
-        static constexpr bool operator()(Tuple&& tuple, const T& value, Proj proj = {}) {
+                static constexpr bool operator()(Tuple&& tuple, const T& value, Proj proj = {}) {
             return tuples::any_of(
                 std::forward<Tuple>(tuple),
                 std::bind_back(functional::safe_equal_to{}, value),

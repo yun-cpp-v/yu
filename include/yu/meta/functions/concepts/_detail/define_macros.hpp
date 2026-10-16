@@ -23,7 +23,6 @@
                                                                                                \
     struct fn {                                                                                \
             template <typename T>                                                              \
-            [[nodiscard]]                                                                      \
             static constexpr auto operator()(type_t<T>) noexcept -> constant_t<std::NAME<T>> { \
                 return {};                                                                     \
             }                                                                                  \
@@ -39,7 +38,6 @@
                                                                                                              \
     struct fn {                                                                                              \
             template <typename T, typename U>                                                                \
-            [[nodiscard]]                                                                                    \
             static constexpr auto operator()(type_t<T>, type_t<U>) noexcept -> constant_t<std::NAME<T, U>> { \
                 return {};                                                                                   \
             }                                                                                                \
@@ -55,7 +53,6 @@
                                                                                        \
     struct fn {                                                                        \
             template <typename T, typename U, typename V>                              \
-            [[nodiscard]]                                                              \
             static constexpr auto operator()(type_t<T>, type_t<U>, type_t<V>) noexcept \
                 -> constant_t<std::NAME<T, U, V>> {                                    \
                 return {};                                                             \
@@ -72,7 +69,6 @@
                                                                                                                      \
     struct fn {                                                                                                      \
             template <typename T, typename... Ts>                                                                    \
-            [[nodiscard]]                                                                                            \
             static constexpr auto operator()(type_t<T>, type_t<Ts>...) noexcept -> constant_t<std::NAME<T, Ts...>> { \
                 return {};                                                                                           \
             }                                                                                                        \
@@ -88,7 +84,6 @@
                                                                                            \
     struct fn {                                                                            \
             template <typename T, typename U, typename... Ts>                              \
-            [[nodiscard]]                                                                  \
             static constexpr auto operator()(type_t<T>, type_t<U>, type_t<Ts>...) noexcept \
                 -> constant_t<std::NAME<T, U, Ts...>> {                                    \
                 return {};                                                                 \
@@ -105,7 +100,6 @@
                                                                                                        \
     struct fn {                                                                                        \
             template <typename... Ts>                                                                  \
-            [[nodiscard]]                                                                              \
             static constexpr auto operator()(type_t<Ts>...) noexcept -> constant_t<std::NAME<Ts...>> { \
                 return {};                                                                             \
             }                                                                                          \

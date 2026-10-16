@@ -28,8 +28,7 @@ struct fn {
             typename Proj1 = std::identity,
             typename Proj2 = std::identity
         >
-        [[nodiscard]]
-        static constexpr std::optional<std::size_t> operator()(
+                static constexpr std::optional<std::size_t> operator()(
             Tuple1&& tuple1,
             Tuple2&& tuple2,
             Pred     pred  = {},

@@ -16,8 +16,7 @@ struct fn {
     public:
         template <tuple Tuple, typename T, typename Fn>
         requires _detail::left_foldable<Fn, T, Tuple>
-        [[nodiscard]]
-        static constexpr auto operator()(Tuple&& tuple, T init, Fn f) {
+                static constexpr auto operator()(Tuple&& tuple, T init, Fn f) {
             if constexpr (size_v<Tuple> == 0) {
                 return init;
             } else {
