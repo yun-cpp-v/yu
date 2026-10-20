@@ -9,12 +9,7 @@
 namespace yu::tuples {
 
 template <typename T>
-struct size :
-    std::conditional_t<
-        std::is_bounded_array_v<std::remove_cv_t<T>>,
-        std::extent<std::remove_cv_t<T>>,
-        std::tuple_size<T>
-    > {};
+struct size : std::conditional_t<std::is_bounded_array_v<T>, std::extent<T>, std::tuple_size<T>> {};
 
 template <typename T>
 inline constexpr std::size_t size_v = size<T>::value;
