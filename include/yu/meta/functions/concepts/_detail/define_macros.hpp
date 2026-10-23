@@ -1,12 +1,7 @@
 // yutool: include guard
-#ifndef YU_META_FUNCTIONS_CONCEPTS_DETAIL_DEFINE_MACROS_HPP_
-#define YU_META_FUNCTIONS_CONCEPTS_DETAIL_DEFINE_MACROS_HPP_
-
 #include <yu/meta/constant.hpp> // IWYU pragma: keep
 #include <yu/meta/type.hpp>     // IWYU pragma: keep
 #include <concepts>             // IWYU pragma: keep
-
-#endif
 
 #ifndef DEFINE_FUNCTION_OBJECT
 #define DEFINE_FUNCTION_OBJECT(NAME)                \

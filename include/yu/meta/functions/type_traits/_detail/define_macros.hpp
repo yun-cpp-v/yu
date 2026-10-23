@@ -1,12 +1,6 @@
-// yutool: include guard
-#ifndef YU_META_FUNCTIONS_TYPE_TRAITS_DETAIL_DEFINE_MACROS_HPP_
-#define YU_META_FUNCTIONS_TYPE_TRAITS_DETAIL_DEFINE_MACROS_HPP_
-
 #include <yu/meta/constant.hpp> // IWYU pragma: export
 #include <yu/meta/type.hpp>     // IWYU pragma: export
 #include <type_traits>          // IWYU pragma: export
-
-#endif
 
 #ifndef DEFINE_FUNCTION_OBJECT
 #define DEFINE_FUNCTION_OBJECT(NAME)                \
