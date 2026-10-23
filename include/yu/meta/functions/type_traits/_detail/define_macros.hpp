@@ -6,7 +6,7 @@
 #define DEFINE_FUNCTION_OBJECT(NAME)                \
     inline namespace fn {                           \
                                                     \
-    inline constexpr _unspecified::NAME::fn NAME{}; \
+    inline constexpr _unspecified::NAME::fn NAME; \
                                                     \
     }
 #endif

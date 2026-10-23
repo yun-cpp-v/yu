@@ -11,7 +11,7 @@ template <std::size_t V>
 using index_t = meta::constant_t<V>;
 
 template <std::size_t Idx>
-inline constexpr index_t<Idx> index{};
+inline constexpr index_t<Idx> index;
 
 } // namespace yu::tuples
 

@@ -32,7 +32,7 @@ struct fn {
 
 inline namespace _fn {
 
-inline constexpr _unspecified::apply::fn apply{};
+inline constexpr _unspecified::apply::fn apply;
 
 }
 

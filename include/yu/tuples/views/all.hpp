@@ -58,7 +58,7 @@ struct closure : tuple_adaptor_closure<closure> {
 
 } // namespace _unspecified::all
 
-inline constexpr _unspecified::all::closure all{};
+inline constexpr _unspecified::all::closure all;
 
 template <tuple Tuple>
 using all_t = decltype(all(std::declval<Tuple>()));

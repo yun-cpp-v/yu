@@ -25,7 +25,7 @@ class enumerate_view : public view_interface<enumerate_view<View>> {
         }
 
     public:
-        static constexpr size<View> size{};
+        static constexpr size<View> size;
 
         constexpr explicit enumerate_view(View view) :
             base_(std::move(view)) {}
@@ -58,7 +58,7 @@ struct closure : tuple_adaptor_closure<closure> {
 
 } // namespace _unspecified::enumerate
 
-inline constexpr _unspecified::enumerate::closure enumerate{};
+inline constexpr _unspecified::enumerate::closure enumerate;
 
 } // namespace views
 

@@ -34,7 +34,7 @@ struct fn {
 
 inline namespace _fn {
 
-inline constexpr _unspecified::count_if::fn count_if{};
+inline constexpr _unspecified::count_if::fn count_if;
 
 }
 

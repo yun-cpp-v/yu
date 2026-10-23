@@ -29,7 +29,7 @@ struct fn {
 
 inline namespace _fn {
 
-inline constexpr _unspecified::find_last::fn find_last{};
+inline constexpr _unspecified::find_last::fn find_last;
 
 }
 

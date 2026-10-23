@@ -27,7 +27,7 @@ struct fn {
 
 inline namespace _fn {
 
-inline constexpr _unspecified::locate_if::fn locate_if{};
+inline constexpr _unspecified::locate_if::fn locate_if;
 
 }
 

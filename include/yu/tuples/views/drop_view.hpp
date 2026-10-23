@@ -20,8 +20,8 @@ class drop_view : public view_interface<drop_view<View, Count>> {
     private:
         View base_;
 
-        static constexpr size<View>                           base_size_{};
-        static constexpr index_t<std::min(Count, base_size_)> drop_count_{};
+        static constexpr size<View>                           base_size_;
+        static constexpr index_t<std::min(Count, base_size_)> drop_count_;
 
         template <typename Self>
         constexpr decltype(auto) base(this Self&& self) noexcept {
@@ -68,7 +68,7 @@ struct adaptor {
 
 } // namespace _unspecified::drop
 
-inline constexpr _unspecified::drop::adaptor drop{};
+inline constexpr _unspecified::drop::adaptor drop;
 
 } // namespace views
 

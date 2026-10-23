@@ -98,7 +98,7 @@ template <constant_like T>
 constant_t(T&&) -> constant_t<std::remove_cvref_t<T>::value>;
 
 template <auto V>
-inline constexpr auto constant = constant_t<V>{};
+inline constexpr constant_t<V> constant;
 
 } // namespace yu::meta
 

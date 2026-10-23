@@ -73,7 +73,7 @@ struct fn {
 
 inline namespace _fn {
 
-inline constexpr _unspecified::find_end::fn find_end{};
+inline constexpr _unspecified::find_end::fn find_end;
 
 }
 

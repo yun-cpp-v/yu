@@ -33,7 +33,7 @@ struct fn {
 
 inline namespace _fn {
 
-inline constexpr _unspecified::for_each::fn for_each{};
+inline constexpr _unspecified::for_each::fn for_each;
 
 }
 

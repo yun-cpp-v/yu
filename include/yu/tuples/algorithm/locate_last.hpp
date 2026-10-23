@@ -26,7 +26,7 @@ struct fn {
 
 inline namespace _fn {
 
-inline constexpr _unspecified::locate_last::fn locate_last{};
+inline constexpr _unspecified::locate_last::fn locate_last;
 
 }
 

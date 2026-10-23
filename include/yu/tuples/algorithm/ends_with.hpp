@@ -60,7 +60,7 @@ struct fn {
 
 inline namespace _fn {
 
-inline constexpr _unspecified::ends_with::fn ends_with{};
+inline constexpr _unspecified::ends_with::fn ends_with;
 
 }
 

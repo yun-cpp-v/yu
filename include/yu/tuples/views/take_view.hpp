@@ -17,8 +17,8 @@ namespace yu::tuples {
 template <view View, std::size_t Count>
 class take_view : public view_interface<take_view<View, Count>> {
     private:
-        static constexpr auto base_size_  = tuples::size<View>{};
-        static constexpr auto take_count_ = index<(base_size_ < Count ? base_size_ : Count)>;
+        static constexpr tuples::size<View>                                 base_size_;
+        static constexpr index_t<(base_size_ < Count ? base_size_ : Count)> take_count_;
 
         View base_;
 
@@ -35,7 +35,7 @@ class take_view : public view_interface<take_view<View, Count>> {
 
         template <std::size_t Idx, typename Self>
         requires (Idx < size)
-                constexpr decltype(auto) get(this Self&& self) noexcept(
+        constexpr decltype(auto) get(this Self&& self) noexcept(
             noexcept(tuples::get(std::forward<Self>(self).base(), index<Idx>))
         ) {
             return tuples::get(std::forward<Self>(self).base(), index<Idx>);
@@ -67,7 +67,7 @@ struct adaptor {
 
 } // namespace _unspecified::take
 
-inline constexpr _unspecified::take::adaptor take{};
+inline constexpr _unspecified::take::adaptor take;
 
 } // namespace views
 

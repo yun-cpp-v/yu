@@ -43,7 +43,7 @@ class zip_view : public view_interface<zip_view<Views...>> {
         }
 
     public:
-        static constexpr index_t<std::min({size_v<Views>...})> size{};
+        static constexpr index_t<std::min({size_v<Views>...})> size;
 
         constexpr explicit zip_view(Views... views) :
             bases_(std::move(views)...) {}
@@ -77,7 +77,7 @@ struct adaptor {
 
 } // namespace _unspecified::zip
 
-inline constexpr _unspecified::zip::adaptor zip{};
+inline constexpr _unspecified::zip::adaptor zip;
 
 } // namespace views
 

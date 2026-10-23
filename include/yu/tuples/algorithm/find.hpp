@@ -28,7 +28,7 @@ struct fn {
 
 inline namespace _fn {
 
-inline constexpr _unspecified::find::fn find{};
+inline constexpr _unspecified::find::fn find;
 
 }
 

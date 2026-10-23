@@ -35,7 +35,7 @@ class transform_view : public view_interface<transform_view<View, Fn>> {
         }
 
     public:
-        static constexpr size<View> size{};
+        static constexpr size<View> size;
 
         template <typename F>
         requires std::constructible_from<Fn, F&&>
@@ -79,7 +79,7 @@ struct adaptor {
 
 } // namespace _unspecified::transform
 
-inline constexpr _unspecified::transform::adaptor transform{};
+inline constexpr _unspecified::transform::adaptor transform;
 
 } // namespace views
 

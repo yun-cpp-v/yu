@@ -58,7 +58,7 @@ struct fn {
 
 inline namespace _fn {
 
-inline constexpr _unspecified::find_first_of::fn find_first_of{};
+inline constexpr _unspecified::find_first_of::fn find_first_of;
 
 }
 

@@ -23,7 +23,7 @@ struct fn {
 
 } // namespace _unspecified::indices
 
-inline constexpr _unspecified::indices::fn indices{};
+inline constexpr _unspecified::indices::fn indices;
 
 } // namespace views
 

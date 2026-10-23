@@ -59,7 +59,7 @@ struct adaptor {
 
 } // namespace _unspecified::concat
 
-inline constexpr _unspecified::concat::adaptor concat{};
+inline constexpr _unspecified::concat::adaptor concat;
 
 } // namespace views
 

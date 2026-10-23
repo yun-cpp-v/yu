@@ -37,7 +37,7 @@ struct fn {
 
 inline namespace _fn {
 
-inline constexpr _unspecified::fold_right::fn fold_right{};
+inline constexpr _unspecified::fold_right::fn fold_right;
 
 }
 

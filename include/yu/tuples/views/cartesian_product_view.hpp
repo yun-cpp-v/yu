@@ -109,7 +109,7 @@ struct adaptor {
 
 } // namespace _unspecified::cartesian_product
 
-inline constexpr _unspecified::cartesian_product::adaptor cartesian_product{};
+inline constexpr _unspecified::cartesian_product::adaptor cartesian_product;
 
 } // namespace views
 

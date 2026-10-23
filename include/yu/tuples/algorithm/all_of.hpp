@@ -31,7 +31,7 @@ struct fn {
 
 inline namespace _fn {
 
-inline constexpr _unspecified::all_of::fn all_of{};
+inline constexpr _unspecified::all_of::fn all_of;
 
 }
 

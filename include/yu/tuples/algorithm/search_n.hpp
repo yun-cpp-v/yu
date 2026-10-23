@@ -72,7 +72,7 @@ struct fn {
 
 inline namespace _fn {
 
-inline constexpr _unspecified::search_n::fn search_n{};
+inline constexpr _unspecified::search_n::fn search_n;
 
 }
 

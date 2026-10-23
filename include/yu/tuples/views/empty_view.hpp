@@ -9,7 +9,7 @@ namespace yu::tuples {
 
 class empty_view : public view_interface<empty_view> {
     public:
-        static constexpr index_t<0> size{};
+        static constexpr index_t<0> size;
 
         constexpr explicit empty_view() noexcept = default;
 
@@ -19,7 +19,7 @@ class empty_view : public view_interface<empty_view> {
 
 namespace views {
 
-inline constexpr empty_view empty{};
+inline constexpr empty_view empty;
 
 }
 

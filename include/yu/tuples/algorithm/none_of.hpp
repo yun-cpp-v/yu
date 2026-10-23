@@ -26,7 +26,7 @@ struct fn {
 
 inline namespace _fn {
 
-inline constexpr _unspecified::none_of::fn none_of{};
+inline constexpr _unspecified::none_of::fn none_of;
 
 }
 

@@ -18,7 +18,7 @@ class single_view : public view_interface<single_view<T>> {
         T value_;
 
     public:
-        static constexpr index_t<1> size{};
+        static constexpr index_t<1> size;
 
         constexpr explicit single_view(T value) :
             value_(std::move(value)) {}
@@ -47,7 +47,7 @@ struct fn {
 
 } // namespace _unspecified::single
 
-inline constexpr _unspecified::single::fn single{};
+inline constexpr _unspecified::single::fn single;
 
 } // namespace views
 

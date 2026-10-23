@@ -44,7 +44,7 @@ struct fn {
 
 inline namespace _fn {
 
-inline constexpr _unspecified::match_n::fn match_n{};
+inline constexpr _unspecified::match_n::fn match_n;
 
 }
 

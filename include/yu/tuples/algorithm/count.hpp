@@ -30,7 +30,7 @@ struct fn {
 
 inline namespace _fn {
 
-inline constexpr _unspecified::count::fn count{};
+inline constexpr _unspecified::count::fn count;
 
 }
 

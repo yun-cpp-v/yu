@@ -32,7 +32,7 @@ struct fn {
 
 inline namespace _fn {
 
-inline constexpr _unspecified::find_if_not::fn find_if_not{};
+inline constexpr _unspecified::find_if_not::fn find_if_not;
 
 }
 

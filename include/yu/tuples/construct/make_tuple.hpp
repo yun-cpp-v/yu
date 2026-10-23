@@ -28,7 +28,7 @@ struct adaptor {
 
 } // namespace _unspecified::make_tuple
 
-inline constexpr _unspecified::make_tuple::adaptor make_tuple{};
+inline constexpr _unspecified::make_tuple::adaptor make_tuple;
 
 } // namespace yu::tuples
 

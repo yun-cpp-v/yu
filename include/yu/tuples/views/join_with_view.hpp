@@ -45,7 +45,7 @@ class separator_insert_view : public tuples::view_interface<separator_insert_vie
         }
 
     public:
-        static constexpr index_t<2 * size_v<View> - 1> size{};
+        static constexpr index_t<2 * size_v<View> - 1> size;
 
         constexpr explicit separator_insert_view(View view, Pattern pattern) :
             base_(view), pattern_(pattern) {}
@@ -135,7 +135,7 @@ struct adaptor {
 
 } // namespace _unspecified::join_with
 
-inline constexpr _unspecified::join_with::adaptor join_with{};
+inline constexpr _unspecified::join_with::adaptor join_with;
 
 } // namespace views
 } // namespace yu::tuples

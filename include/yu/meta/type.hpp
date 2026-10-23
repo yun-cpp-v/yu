@@ -23,7 +23,7 @@ struct type_t {
 };
 
 template <typename Type>
-inline constexpr type_t<Type> type{};
+inline constexpr type_t<Type> type;
 
 namespace _unspecified::as_type {
 
@@ -38,7 +38,7 @@ struct fn {
 
 inline namespace _fn {
 
-inline constexpr _unspecified::as_type::fn as_type{};
+inline constexpr _unspecified::as_type::fn as_type;
 
 }
 

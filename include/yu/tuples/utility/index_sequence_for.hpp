@@ -12,7 +12,7 @@ template <tuple T>
 using index_sequence_for = std::make_index_sequence<size_v<T>>;
 
 template <tuple T>
-inline constexpr index_sequence_for<T> indices_for{};
+inline constexpr index_sequence_for<T> indices_for;
 
 } // namespace yu::tuples
 

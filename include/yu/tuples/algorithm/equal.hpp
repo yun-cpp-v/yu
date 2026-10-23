@@ -56,7 +56,7 @@ struct fn {
 
 inline namespace _fn {
 
-inline constexpr _unspecified::equal::fn equal{};
+inline constexpr _unspecified::equal::fn equal;
 
 }
 

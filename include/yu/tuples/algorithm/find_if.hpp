@@ -44,7 +44,7 @@ struct fn {
 
 inline namespace _fn {
 
-inline constexpr _unspecified::find_if::fn find_if{};
+inline constexpr _unspecified::find_if::fn find_if;
 
 }
 

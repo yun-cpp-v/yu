@@ -49,7 +49,7 @@ struct fn {
 
 inline namespace _fn {
 
-inline constexpr _unspecified::match::fn match{};
+inline constexpr _unspecified::match::fn match;
 
 }
 

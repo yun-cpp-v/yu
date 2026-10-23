@@ -47,7 +47,7 @@ struct fn {
 
 inline namespace _fn {
 
-inline constexpr _unspecified::locate_first_of::fn locate_first_of{};
+inline constexpr _unspecified::locate_first_of::fn locate_first_of;
 
 }
 

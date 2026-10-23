@@ -45,7 +45,7 @@ struct fn {
 
 inline namespace _fn {
 
-inline constexpr _unspecified::contains_subtuple::fn contains_subtuple{};
+inline constexpr _unspecified::contains_subtuple::fn contains_subtuple;
 
 }
 

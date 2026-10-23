@@ -23,7 +23,7 @@ class as_rvalue_view : public view_interface<as_rvalue_view<View>> {
         }
 
     public:
-        static constexpr size<View> size{};
+        static constexpr size<View> size;
 
         constexpr explicit as_rvalue_view(View view) :
             base_(std::move(view)) {}
@@ -50,7 +50,7 @@ struct closure : tuple_adaptor_closure<closure> {
 
 } // namespace _unspecified::as_rvalue
 
-inline constexpr _unspecified::as_rvalue::closure as_rvalue{};
+inline constexpr _unspecified::as_rvalue::closure as_rvalue;
 
 } // namespace views
 

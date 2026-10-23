@@ -33,7 +33,7 @@ struct fn {
 
 inline namespace _fn {
 
-inline constexpr _unspecified::for_each_n::fn for_each_n{};
+inline constexpr _unspecified::for_each_n::fn for_each_n;
 
 }
 } // namespace yu::tuples

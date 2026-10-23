@@ -46,7 +46,7 @@ struct fn {
 
 inline namespace _cpo {
 
-inline constexpr _unspecified::get::fn get{};
+inline constexpr _unspecified::get::fn get;
 
 } // namespace _cpo
 

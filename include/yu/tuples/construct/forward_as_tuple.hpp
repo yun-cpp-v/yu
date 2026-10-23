@@ -30,7 +30,7 @@ struct adaptor {
 
 } // namespace _unspecified::forward_as_tuple
 
-inline constexpr _unspecified::forward_as_tuple::adaptor forward_as_tuple{};
+inline constexpr _unspecified::forward_as_tuple::adaptor forward_as_tuple;
 
 } // namespace yu::tuples
 

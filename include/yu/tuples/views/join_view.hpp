@@ -101,7 +101,7 @@ struct adaptor : public tuple_adaptor_closure<adaptor> {
 
 } // namespace _unspecified::join
 
-inline constexpr _unspecified::join::adaptor join{};
+inline constexpr _unspecified::join::adaptor join;
 
 } // namespace views
 

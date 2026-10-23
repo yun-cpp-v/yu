@@ -23,7 +23,7 @@ class reverse_view : public view_interface<reverse_view<View>> {
         }
 
     public:
-        static constexpr size<View> size{};
+        static constexpr size<View> size;
 
         constexpr explicit reverse_view(View view) :
             base_(std::move(view)) {}
@@ -53,7 +53,7 @@ struct closure : tuple_adaptor_closure<closure> {
 
 } // namespace _unspecified::reverse
 
-inline constexpr _unspecified::reverse::closure reverse{};
+inline constexpr _unspecified::reverse::closure reverse;
 
 } // namespace views
 

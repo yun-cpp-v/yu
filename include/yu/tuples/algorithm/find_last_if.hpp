@@ -46,7 +46,7 @@ struct fn {
 
 inline namespace _fn {
 
-inline constexpr _unspecified::find_last_if::fn find_last_if{};
+inline constexpr _unspecified::find_last_if::fn find_last_if;
 
 }
 

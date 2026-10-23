@@ -29,7 +29,7 @@ struct fn {
 
 inline namespace _fn {
 
-inline constexpr _unspecified::contains::fn contains{};
+inline constexpr _unspecified::contains::fn contains;
 
 }
 
