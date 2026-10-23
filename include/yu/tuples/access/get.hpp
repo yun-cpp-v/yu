@@ -17,11 +17,13 @@ void get() = delete;
 struct fn {
     public:
         template <std::size_t Idx, typename T, std::size_t N>
+        requires (Idx < N)
         static constexpr auto operator()(T (&t)[N], index_t<Idx>) noexcept -> T& {
             return t[Idx];
         }
 
         template <std::size_t Idx, typename T, std::size_t N>
+        requires (Idx < N)
         static constexpr auto operator()(T (&&t)[N], index_t<Idx>) noexcept -> T&& {
             return std::move(t[Idx]);
         }
@@ -46,7 +48,7 @@ inline namespace _cpo {
 
 inline constexpr _unspecified::get::fn get{};
 
-}
+} // namespace _cpo
 
 } // namespace yu::tuples
 
