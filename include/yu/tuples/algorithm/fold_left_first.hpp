@@ -16,7 +16,7 @@ struct fn {
     public:
         template <tuple Tuple, typename Fn>
         requires _detail::left_foldable_first<Fn, Tuple>
-                static constexpr auto operator()(Tuple&& tuple, Fn f) {
+        static constexpr auto operator()(Tuple&& tuple, Fn f) {
             return tuples::apply(
                 [&]<typename... Elems>(Elems&&... elems) {
                     return _detail::fold_left_impl(f, std::forward<Elems>(elems)...);

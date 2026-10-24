@@ -16,7 +16,7 @@ namespace _unspecified::locate_if {
 struct fn {
     public:
         template <tuple Tuple, typename Pred, typename Proj = std::identity>
-                static constexpr auto operator()(Tuple&& tuple, Pred pred, Proj proj = {}) {
+        static constexpr auto operator()(Tuple&& tuple, Pred pred, Proj proj = {}) {
             auto&& result = tuples::find_if(std::forward<Tuple>(tuple), std::ref(pred), std::ref(proj));
 
             return result.transform([&](std::size_t index) { return location{std::forward<Tuple>(tuple), index}; });

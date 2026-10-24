@@ -35,7 +35,7 @@ class concat_view : public view_interface<concat_view<Views...>> {
 
         template <std::size_t Idx, typename Self>
         requires (Idx < size)
-                constexpr decltype(auto) get(this Self&& self) noexcept(
+        constexpr decltype(auto) get(this Self&& self) noexcept(
             noexcept(tuples::get(std::forward<Self>(self).base(), index<Idx>))
         ) {
             return tuples::get(std::forward<Self>(self).base(), index<Idx>);

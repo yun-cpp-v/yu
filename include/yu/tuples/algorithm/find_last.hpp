@@ -16,7 +16,7 @@ namespace _unspecified::find_last {
 
 struct fn {
         template <tuple Tuple, typename T, typename Proj = std::identity>
-                static constexpr std::optional<std::size_t> operator()(Tuple&& tuple, const T& value, Proj proj = {}) {
+        static constexpr std::optional<std::size_t> operator()(Tuple&& tuple, const T& value, Proj proj = {}) {
             return tuples::find_last_if(
                 std::forward<Tuple>(tuple),
                 std::bind_back(std::ranges::equal_to{}, value),

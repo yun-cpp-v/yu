@@ -27,7 +27,10 @@ struct composed_closure : tuples::tuple_adaptor_closure<composed_closure<Closure
         template <typename Self, typename Tuple>
         static consteval bool invocable() {
             return requires(Self&& self, Tuple&& tuple) {
-                std::invoke(std::forward<Self>(self).closure2(), std::invoke(std::forward<Self>(self).closure1(), std::forward<Tuple>(tuple)));
+                std::invoke(
+                    std::forward<Self>(self).closure2(),
+                    std::invoke(std::forward<Self>(self).closure1(), std::forward<Tuple>(tuple))
+                );
             };
         }
 
@@ -55,8 +58,11 @@ struct composed_closure : tuples::tuple_adaptor_closure<composed_closure<Closure
 
         template <typename Self, tuples::tuple Tuple>
         requires (invocable<Self, Tuple>())
-                constexpr decltype(auto) operator()(this Self&& self, Tuple&& tuple) noexcept(is_nothrow<self, Tuple>()) {
-            return std::invoke(std::forward<Self>(self).closure2(), std::invoke(std::forward<Self>(self).closure1(), std::forward<Tuple>(tuple)));
+        constexpr decltype(auto) operator()(this Self&& self, Tuple&& tuple) noexcept(is_nothrow<self, Tuple>()) {
+            return std::invoke(
+                std::forward<Self>(self).closure2(),
+                std::invoke(std::forward<Self>(self).closure1(), std::forward<Tuple>(tuple))
+            );
         }
 };
 
@@ -73,13 +79,13 @@ requires std::is_class_v<D> && std::same_as<D, std::remove_cv_t<D>>
 struct tuple_adaptor_closure {
         template <typename Self, typename Closure>
         requires _detail::adaptor_closure<Closure>
-                constexpr auto operator|(this Self&& self, Closure&& closure) {
+        constexpr auto operator|(this Self&& self, Closure&& closure) {
             return _detail::composed_closure{std::forward<Self>(self), std::forward<Closure>(closure)};
         }
 
         template <tuple Tuple, typename Closure>
         requires std::same_as<std::remove_cvref_t<Closure>, D> && std::invocable<Closure, Tuple&&>
-                friend constexpr decltype(auto) operator|(Tuple&& tuple, Closure&& closure) noexcept(
+        friend constexpr decltype(auto) operator|(Tuple&& tuple, Closure&& closure) noexcept(
             std::is_nothrow_invocable_v<Closure, Tuple&&>
         ) {
             return std::invoke(std::forward<Closure>(closure), std::forward<Tuple>(tuple));

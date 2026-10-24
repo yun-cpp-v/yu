@@ -101,7 +101,7 @@ class split_when_view : public view_interface<split_when_view<View, Pred>> {
 
         template <std::size_t Idx, typename Self>
         requires (Idx < size)
-                constexpr decltype(auto) get(this Self&& self) noexcept(is_nothrow<Idx, Self>()) {
+        constexpr decltype(auto) get(this Self&& self) noexcept(is_nothrow<Idx, Self>()) {
             constexpr auto index_range = ranges_[index<Idx>];
             using index_range_t        = decltype(index_range)::value_type;
 

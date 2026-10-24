@@ -1,14 +1,13 @@
-// yutool: include guard
 #include <yu/meta/constant.hpp> // IWYU pragma: keep
 #include <yu/meta/type.hpp>     // IWYU pragma: keep
 #include <concepts>             // IWYU pragma: keep
 
 #ifndef DEFINE_FUNCTION_OBJECT
-#define DEFINE_FUNCTION_OBJECT(NAME)                \
-    inline namespace _fn {                          \
-                                                    \
+#define DEFINE_FUNCTION_OBJECT(NAME)              \
+    inline namespace _fn {                        \
+                                                  \
     inline constexpr _unspecified::NAME::fn NAME; \
-                                                    \
+                                                  \
     }
 #endif
 

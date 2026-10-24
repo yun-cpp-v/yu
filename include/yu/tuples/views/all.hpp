@@ -45,7 +45,7 @@ struct closure : tuple_adaptor_closure<closure> {
     public:
         template <tuple Tuple>
         requires _detail::all::view_or_viewable<Tuple>
-                static constexpr auto operator()(Tuple&& tuple) noexcept(is_nothrow<Tuple>()) {
+        static constexpr auto operator()(Tuple&& tuple) noexcept(is_nothrow<Tuple>()) {
             if constexpr (view<std::remove_cvref_t<Tuple>>) {
                 return auto(std::forward<Tuple>(tuple));
             } else if constexpr (_detail::all::ref_viewable<Tuple>) {

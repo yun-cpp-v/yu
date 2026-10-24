@@ -3,11 +3,11 @@
 #include <type_traits>          // IWYU pragma: export
 
 #ifndef DEFINE_FUNCTION_OBJECT
-#define DEFINE_FUNCTION_OBJECT(NAME)                \
-    inline namespace fn {                           \
-                                                    \
+#define DEFINE_FUNCTION_OBJECT(NAME)              \
+    inline namespace fn {                         \
+                                                  \
     inline constexpr _unspecified::NAME::fn NAME; \
-                                                    \
+                                                  \
     }
 #endif
 

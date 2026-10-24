@@ -20,7 +20,7 @@ struct fn {
     public:
         template <tuple Tuple, typename T, typename Fn>
         requires _detail::right_foldable<Fn, T, Tuple>
-                static constexpr auto operator()(Tuple&& tuple, T init, Fn fn) {
+        static constexpr auto operator()(Tuple&& tuple, T init, Fn fn) {
             constexpr std::size_t size = size_v<Tuple>;
 
             if constexpr (size == 0) {

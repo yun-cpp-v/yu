@@ -66,7 +66,7 @@ class type_adaptor {
 
         template <tuple Tuple, typename Adaptor>
         requires std::same_as<std::remove_cvref_t<Adaptor>, type_adaptor<Ret, Args...>>
-                friend constexpr auto operator|(Tuple&& tuple, Adaptor&& adaptor) {
+        friend constexpr auto operator|(Tuple&& tuple, Adaptor&& adaptor) {
             return tuples::apply(
                 [&]<typename... Elems>(Elems&&... elems) {
                     return tuples::construct<Ret>(std::forward<Tuple>(tuple), std::forward<Elems>(elems)...);
@@ -88,7 +88,7 @@ class template_adaptor {
 
         template <tuple Tuple, typename Adaptor>
         requires std::same_as<std::remove_cvref_t<Adaptor>, template_adaptor<RetT, Args...>>
-                friend constexpr auto operator|(Tuple&& tuple, Adaptor&& adaptor) {
+        friend constexpr auto operator|(Tuple&& tuple, Adaptor&& adaptor) {
             return tuples::apply(
                 [&]<typename... Elems>(Elems&&... elems) {
                     return tuples::construct<RetT>(std::forward<Tuple>(tuple), std::forward<Elems>(elems)...);

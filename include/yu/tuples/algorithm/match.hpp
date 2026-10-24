@@ -24,7 +24,7 @@ struct fn {
             typename Proj1 = std::identity,
             typename Proj2 = std::identity
         >
-                static constexpr auto operator()(
+        static constexpr auto operator()(
             Tuple1&& tuple1,
             Tuple2&& tuple2,
             Pred     pred  = {},

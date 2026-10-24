@@ -29,6 +29,7 @@
 #include "views/take_while_view.hpp"        // IWYU pragma: export
 #include "views/transform_view.hpp"         // IWYU pragma: export
 #include "views/tuple_adaptor_closure.hpp"  // IWYU pragma: export
+#include "views/tuple_adaptor_closure2.hpp" // IWYU pragma: export
 #include "views/view_base.hpp"              // IWYU pragma: export
 #include "views/view_interface.hpp"         // IWYU pragma: export
 #include "views/zip_view.hpp"               // IWYU pragma: export

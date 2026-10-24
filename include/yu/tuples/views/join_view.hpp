@@ -76,7 +76,7 @@ class join_view : public view_interface<join_view<View>> {
 
         template <std::size_t Idx, typename Self>
         requires (Idx < size)
-                constexpr decltype(auto) get(this Self&& self) noexcept(is_nothrow<Idx, Self>()) {
+        constexpr decltype(auto) get(this Self&& self) noexcept(is_nothrow<Idx, Self>()) {
             constexpr auto map         = index_map_[index<Idx>];
             constexpr auto base_index  = meta::constant_invoke(meta::constant<&index_pair::base_index>, map);
             constexpr auto inner_index = meta::constant_invoke(meta::constant<&index_pair::inner_index>, map);

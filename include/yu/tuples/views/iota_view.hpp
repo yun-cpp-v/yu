@@ -21,8 +21,8 @@ class iota_view : public view_interface<iota_view<Start, End>> {
 
         template <std::size_t Idx, typename Self>
         requires (Idx < size)
-                constexpr index_t<Start + Idx> get(this Self&&) noexcept {
-            return ;
+        constexpr index_t<Start + Idx> get(this Self&&) noexcept {
+            return;
         }
 };
 
@@ -36,7 +36,7 @@ namespace _unspecified::iota {
 struct fn {
         template <std::size_t Start, std::size_t End>
         requires (Start <= End)
-                static constexpr auto operator()(index_t<Start>, index_t<End>) noexcept {
+        static constexpr auto operator()(index_t<Start>, index_t<End>) noexcept {
             return iota_view<Start, End>{};
         }
 };
