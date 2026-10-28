@@ -41,7 +41,7 @@ namespace fn {
 struct repeat_fn {
         template <std::move_constructible T, std::size_t Size>
         requires std::is_object_v<T>
-        constexpr auto YU_STATELESS_CALL_OPERATOR(T&& value, index_t<Size> index)  {
+        constexpr auto YU_STATELESS_CALL_OPERATOR(T&& value, index_t<Size> index) {
             return repeat_view{std::forward<T>(value), index};
         }
 };
