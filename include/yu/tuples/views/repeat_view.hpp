@@ -3,6 +3,7 @@
 #define YU_TUPLES_VIEWS_REPEAT_VIEW_HPP_
 
 #include "view_interface.hpp"
+#include <yu/config/stateless_call_operator.hpp>
 #include <yu/tuples/access/index.hpp>
 #include <yu/tuples/concepts/tuple.hpp>
 #include <concepts>
@@ -35,21 +36,19 @@ repeat_view(Tuple, index_t<Size>) -> repeat_view<Tuple, Size>;
 
 namespace views {
 
-namespace _unspecified::repeat {
+namespace fn {
 
-struct fn {
+struct repeat_fn {
         template <std::move_constructible T, std::size_t Size>
         requires std::is_object_v<T>
-        static constexpr decltype(auto) operator()(T&& value, index_t<Size> index) noexcept(
-            noexcept(repeat_view{std::forward<T>(value), index})
-        ) {
+        constexpr auto YU_STATELESS_CALL_OPERATOR(T&& value, index_t<Size> index)  {
             return repeat_view{std::forward<T>(value), index};
         }
 };
 
-} // namespace _unspecified::repeat
+} // namespace fn
 
-inline constexpr _unspecified::repeat::fn repeat;
+inline constexpr fn::repeat_fn repeat;
 
 } // namespace views
 

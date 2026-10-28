@@ -2,6 +2,7 @@
 #ifndef YU_TUPLES_ALGORITHM_SEARCH_N_HPP_
 #define YU_TUPLES_ALGORITHM_SEARCH_N_HPP_
 
+#include <yu/config/stateless_call_operator.hpp>
 #include <yu/functional/predicates.hpp>
 #include <yu/functional/with_fallback.hpp>
 #include <yu/tuples/access/get.hpp>
@@ -17,10 +18,9 @@
 
 namespace yu::tuples {
 
-namespace _unspecified::search_n {
+namespace fn {
 
-struct fn {
-    public:
+struct search_n_fn {
         template <
             tuple Tuple,
             typename T,
@@ -28,7 +28,7 @@ struct fn {
             typename Pred = functional::safe_equal_to,
             typename Proj = std::identity
         >
-        static constexpr std::optional<std::size_t> operator()(
+        constexpr std::optional<std::size_t> YU_STATELESS_CALL_OPERATOR(
             Tuple&&  tuple,
             const T& value,
             index_t<Count>,
@@ -68,11 +68,11 @@ struct fn {
         }
 };
 
-} // namespace _unspecified::search_n
+} // namespace fn
 
 inline namespace _fn {
 
-inline constexpr _unspecified::search_n::fn search_n;
+inline constexpr fn::search_n_fn search_n;
 
 }
 

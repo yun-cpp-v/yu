@@ -2,6 +2,7 @@
 #ifndef YU_TUPLES_VIEWS_CONCAT_VIEW_HPP_
 #define YU_TUPLES_VIEWS_CONCAT_VIEW_HPP_
 
+#include "adaptor.hpp"
 #include "all.hpp"
 #include "join_view.hpp"
 #include "view_interface.hpp"
@@ -46,20 +47,9 @@ template <typename... Tuples>
 concat_view(Tuples&&...) -> concat_view<views::all_t<Tuples&&>...>;
 
 namespace views {
-namespace _unspecified::concat {
 
-struct adaptor {
-        template <tuple... Tuples>
-        static constexpr auto operator()(Tuples&&... tuples) noexcept(noexcept(concat_view{
-            std::forward<Tuples>(tuples)...
-        })) {
-            return concat_view{std::forward<Tuples>(tuples)...};
-        }
-};
-
-} // namespace _unspecified::concat
-
-inline constexpr _unspecified::concat::adaptor concat;
+inline constexpr adaptor concat
+    = []<tuple... Tuples>(Tuples&&... tuples) { return concat_view{std::forward<Tuples>(tuples)...}; };
 
 } // namespace views
 

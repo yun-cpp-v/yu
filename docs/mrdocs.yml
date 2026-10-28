@@ -1,0 +1,8 @@
+source-root: ..
+
+compilation-database: compile_commands.json
+
+use-system-stdlib: true
+
+implementation-defined:
+  - "**::_detail::**"

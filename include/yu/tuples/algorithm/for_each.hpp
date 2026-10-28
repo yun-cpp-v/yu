@@ -2,6 +2,7 @@
 #ifndef YU_TUPLES_ALGORITHM_FOR_EACH_HPP_
 #define YU_TUPLES_ALGORITHM_FOR_EACH_HPP_
 
+#include <yu/config/stateless_call_operator.hpp>
 #include <yu/tuples/access/index.hpp>
 #include <yu/tuples/apply.hpp>
 #include <yu/tuples/concepts/elementwise_unary_invocable.hpp>
@@ -13,13 +14,12 @@
 
 namespace yu::tuples {
 
-namespace _unspecified::for_each {
+namespace fn {
 
-struct fn {
-    public:
+struct for_each_fn {
         template <tuple Tuple, typename Fn, typename Proj = std::identity>
         requires elementwise_unary_invocable<Fn, projected<Tuple, Proj>>
-        static constexpr void operator()(Tuple&& tuple, Fn f, Proj proj = {}) {
+        constexpr void YU_STATELESS_CALL_OPERATOR(Tuple&& tuple, Fn f, Proj proj = {}) {
             tuples::apply(
                 [&]<typename... Elems>(Elems&&... elems) {
                     (void)(std::invoke(f, std::invoke(proj, std::forward<Elems>(elems))), ...);
@@ -29,11 +29,11 @@ struct fn {
         }
 };
 
-} // namespace _unspecified::for_each
+} // namespace fn
 
 inline namespace _fn {
 
-inline constexpr _unspecified::for_each::fn for_each;
+inline constexpr fn::for_each_fn for_each;
 
 }
 

@@ -2,6 +2,7 @@
 #ifndef YU_TUPLES_ALGORITHM_EQUAL_HPP_
 #define YU_TUPLES_ALGORITHM_EQUAL_HPP_
 
+#include <yu/config/stateless_call_operator.hpp>
 #include <yu/functional/predicates.hpp>
 #include <yu/functional/with_fallback.hpp>
 #include <yu/tuples/access/get.hpp>
@@ -15,10 +16,9 @@
 
 namespace yu::tuples {
 
-namespace _unspecified::equal {
+namespace fn {
 
-struct fn {
-    public:
+struct equal_fn {
         template <
             tuple Tuple1,
             tuple Tuple2,
@@ -26,7 +26,7 @@ struct fn {
             typename Proj1 = std::identity,
             typename Proj2 = std::identity
         >
-        static constexpr bool operator()(
+        constexpr bool YU_STATELESS_CALL_OPERATOR(
             Tuple1&& tuple1,
             Tuple2&& tuple2,
             Pred     pred  = {},
@@ -52,11 +52,11 @@ struct fn {
         }
 };
 
-} // namespace _unspecified::equal
+} // namespace fn
 
 inline namespace _fn {
 
-inline constexpr _unspecified::equal::fn equal;
+inline constexpr fn::equal_fn equal;
 
 }
 

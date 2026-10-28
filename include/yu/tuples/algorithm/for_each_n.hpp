@@ -2,6 +2,7 @@
 #ifndef YU_TUPLES_ALGORITHM_FOR_EACH_N_HPP_
 #define YU_TUPLES_ALGORITHM_FOR_EACH_N_HPP_
 
+#include <yu/config/stateless_call_operator.hpp>
 #include <yu/tuples/access/get.hpp>
 #include <yu/tuples/access/index.hpp>
 #include <yu/tuples/concepts/elementwise_unary_invocable.hpp>
@@ -14,13 +15,12 @@
 
 namespace yu::tuples {
 
-namespace _unspecified::for_each_n {
+namespace fn {
 
-struct fn {
-    public:
+struct for_each_n_fn {
         template <tuple Tuple, std::size_t N, typename Fn, typename Proj = std::identity>
         requires elementwise_unary_invocable<Fn, projected<Tuple, Proj>> && (N < size_v<Tuple>)
-        static constexpr void operator()(Tuple&& tuple, index_t<N>, Fn fn, Proj proj = {}) {
+        constexpr void YU_STATELESS_CALL_OPERATOR(Tuple&& tuple, index_t<N>, Fn fn, Proj proj = {}) {
             auto eval = [&]<std::size_t... Idx>(std::index_sequence<Idx...>) {
                 (std::invoke(fn, std::invoke(proj, tuples::get(std::forward<Tuple>(tuple), index<Idx>))), ...);
             };
@@ -29,11 +29,11 @@ struct fn {
         }
 };
 
-} // namespace _unspecified::for_each_n
+} // namespace fn
 
 inline namespace _fn {
 
-inline constexpr _unspecified::for_each_n::fn for_each_n;
+inline constexpr fn::for_each_n_fn for_each_n;
 
 }
 } // namespace yu::tuples

@@ -1,0 +1,7 @@
+[
+    {
+        "directory": "../",
+        "file": "./all_headers.cpp",
+        "command": "clang++ -std=c++23 -DYU_CONFIG_DISABLE_STATIC_CALL_OPERATOR -Iinclude -c ./docs/all_headers.cpp"
+    }
+]

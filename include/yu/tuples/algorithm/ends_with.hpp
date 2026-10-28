@@ -3,6 +3,7 @@
 #define YU_TUPLES_ALGORITHM_ENDS_WITH_HPP_
 
 #include "yu/functional/predicates.hpp"
+#include <yu/config/stateless_call_operator.hpp>
 #include <yu/functional/predicates.hpp>
 #include <yu/tuples/access/get.hpp>
 #include <yu/tuples/access/size.hpp>
@@ -15,10 +16,9 @@
 
 namespace yu::tuples {
 
-namespace _unspecified::ends_with {
+namespace fn {
 
-struct fn {
-    public:
+struct ends_with_fn {
         template <
             tuple Tuple1,
             tuple Tuple2,
@@ -26,7 +26,7 @@ struct fn {
             typename Proj1 = std::identity,
             typename Proj2 = std::identity
         >
-        static constexpr bool operator()(
+        constexpr bool YU_STATELESS_CALL_OPERATOR(
             Tuple1&& tuple1,
             Tuple2&& tuple2,
             Pred     pred  = {},
@@ -56,11 +56,11 @@ struct fn {
         }
 };
 
-} // namespace _unspecified::ends_with
+} // namespace fn
 
 inline namespace _fn {
 
-inline constexpr _unspecified::ends_with::fn ends_with;
+inline constexpr fn::ends_with_fn ends_with;
 
 }
 

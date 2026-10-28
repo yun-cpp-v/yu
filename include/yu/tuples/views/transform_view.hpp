@@ -2,8 +2,8 @@
 #ifndef YU_TUPLES_VIEWS_TRANSFORM_VIEW_HPP_
 #define YU_TUPLES_VIEWS_TRANSFORM_VIEW_HPP_
 
+#include "adaptor.hpp"
 #include "all.hpp"
-#include "partial_closure.hpp"
 #include "view_interface.hpp"
 #include <yu/tuples/concepts/elementwise_unary_invocable.hpp>
 #include <yu/tuples/concepts/tuple.hpp>
@@ -58,28 +58,9 @@ transform_view(Tuple&&, Fn) -> transform_view<views::all_t<Tuple&&>, Fn>;
 
 namespace views {
 
-namespace _unspecified::transform {
-
-struct adaptor {
-        template <tuple Tuple, typename Fn>
-        requires elementwise_unary_regular_invocable<Fn, Tuple>
-        static constexpr auto operator()(Tuple&& tuple, Fn&& fn) noexcept(
-            noexcept(transform_view{std::forward<Tuple>(tuple), std::forward<Fn>(fn)})
-        ) {
-            return transform_view{std::forward<Tuple>(tuple), std::forward<Fn>(fn)};
-        }
-
-        template <typename Fn>
-        static constexpr auto operator()(Fn&& fn) noexcept(
-            noexcept(make_partial_closure(adaptor{}, std::forward<Fn>(fn)))
-        ) {
-            return make_partial_closure(adaptor{}, std::forward<Fn>(fn));
-        }
-};
-
-} // namespace _unspecified::transform
-
-inline constexpr _unspecified::transform::adaptor transform;
+inline constexpr adaptor transform
+    = []<tuple Tuple, typename Fn>(Tuple&& tuple, Fn&& fn) requires elementwise_unary_regular_invocable<Fn, Tuple>
+{ return transform_view{std::forward<Tuple>(tuple), std::forward<Fn>(fn)}; };
 
 } // namespace views
 

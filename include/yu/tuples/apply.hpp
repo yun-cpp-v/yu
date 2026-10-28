@@ -8,18 +8,18 @@
 #include "type_traits/apply_result.hpp"
 #include "type_traits/is_applicable.hpp"
 #include "utility.hpp"
+#include <yu/config/stateless_call_operator.hpp>
 #include <cstddef>
 #include <functional>
 #include <utility>
 
 namespace yu::tuples {
 
-namespace _unspecified::apply {
+namespace fn {
 
-struct fn {
-    public:
+struct apply_fn {
         template <typename Fn, tuple Tuple>
-        static constexpr apply_result_t<Fn, Tuple> operator()(Fn&& fn, Tuple&& tup) noexcept(
+        constexpr apply_result_t<Fn, Tuple> YU_STATELESS_CALL_OPERATOR(Fn&& fn, Tuple&& tup) noexcept(
             is_nothrow_applicable_v<Fn, Tuple>
         ) {
             return [&]<std::size_t... Idx>(std::index_sequence<Idx...>) -> decltype(auto) {
@@ -28,11 +28,11 @@ struct fn {
         }
 };
 
-} // namespace _unspecified::apply
+} // namespace fn
 
 inline namespace _fn {
 
-inline constexpr _unspecified::apply::fn apply;
+inline constexpr fn::apply_fn apply;
 
 }
 

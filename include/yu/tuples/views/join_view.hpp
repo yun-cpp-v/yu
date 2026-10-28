@@ -2,14 +2,14 @@
 #ifndef YU_TUPLES_VIEWS_JOIN_VIEW_HPP_
 #define YU_TUPLES_VIEWS_JOIN_VIEW_HPP_
 
-#include "_detail/tuple_of_tuples.hpp"
+#include "adaptor.hpp"
 #include "all.hpp"
-#include "tuple_adaptor_closure.hpp"
 #include "view_interface.hpp"
 #include <yu/meta/constant.hpp>
 #include <yu/tuples/access/index.hpp>
 #include <yu/tuples/access/size.hpp>
 #include <yu/tuples/concepts/tuple.hpp>
+#include <yu/tuples/concepts/tuple_of_tuples.hpp>
 #include <yu/tuples/concepts/view.hpp>
 #include <yu/tuples/type_traits/element_type.hpp>
 #include <yu/tuples/utility/index_sequence_for.hpp>
@@ -21,7 +21,7 @@
 namespace yu::tuples {
 
 template <view View>
-requires _detail::tuple_of_tuples<View>
+requires tuple_of_tuples<View>
 class join_view : public view_interface<join_view<View>> {
     private:
         struct index_pair {
@@ -89,19 +89,9 @@ template <typename Tuple>
 join_view(Tuple&&) -> join_view<views::all_t<Tuple&&>>;
 
 namespace views {
-namespace _unspecified::join {
 
-struct adaptor : public tuple_adaptor_closure<adaptor> {
-        template <tuple Tuple>
-        requires tuples::_detail::tuple_of_tuples<Tuple>
-        static constexpr auto operator()(Tuple&& tuple) noexcept(noexcept(join_view{std::forward<Tuple>(tuple)})) {
-            return join_view{std::forward<Tuple>(tuple)};
-        }
-};
-
-} // namespace _unspecified::join
-
-inline constexpr _unspecified::join::adaptor join;
+inline constexpr adaptor join
+    = []<tuple_of_tuples Tuple>(Tuple&& tuple) { return join_view{std::forward<Tuple>(tuple)}; };
 
 } // namespace views
 

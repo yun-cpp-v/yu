@@ -3,6 +3,7 @@
 #define YU_TUPLES_ALGORITHM_LOCATE_FIRST_OF_HPP_
 
 #include "find_first_of.hpp"
+#include <yu/config/stateless_call_operator.hpp>
 #include <yu/functional/predicates.hpp>
 #include <yu/tuples/concepts/tuple.hpp>
 #include <yu/tuples/projected.hpp>
@@ -13,10 +14,9 @@
 
 namespace yu::tuples {
 
-namespace _unspecified::locate_first_of {
+namespace fn {
 
-struct fn {
-    public:
+struct locate_first_of_fn {
         template <
             tuple Tuple1,
             tuple Tuple2,
@@ -24,7 +24,7 @@ struct fn {
             typename Proj1 = std::identity,
             typename Proj2 = std::identity
         >
-        static constexpr auto operator()(
+        constexpr auto YU_STATELESS_CALL_OPERATOR(
             Tuple1&& tuple1,
             Tuple2&& tuple2,
             Pred     pred  = {},
@@ -43,11 +43,11 @@ struct fn {
         }
 };
 
-} // namespace _unspecified::locate_first_of
+} // namespace fn
 
 inline namespace _fn {
 
-inline constexpr _unspecified::locate_first_of::fn locate_first_of;
+inline constexpr fn::locate_first_of_fn locate_first_of;
 
 }
 

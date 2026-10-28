@@ -3,6 +3,7 @@
 #define YU_TUPLES_ALGORITHM_MATCH_HPP_
 
 #include "search.hpp"
+#include <yu/config/stateless_call_operator.hpp>
 #include <yu/functional/predicates.hpp>
 #include <yu/tuples/concepts/tuple.hpp>
 #include <yu/tuples/projected.hpp>
@@ -13,10 +14,9 @@
 
 namespace yu::tuples {
 
-namespace _unspecified::match {
+namespace fn {
 
-struct fn {
-    public:
+struct match_fn {
         template <
             tuple Tuple1,
             tuple Tuple2,
@@ -24,7 +24,7 @@ struct fn {
             typename Proj1 = std::identity,
             typename Proj2 = std::identity
         >
-        static constexpr auto operator()(
+        constexpr auto YU_STATELESS_CALL_OPERATOR(
             Tuple1&& tuple1,
             Tuple2&& tuple2,
             Pred     pred  = {},
@@ -45,11 +45,11 @@ struct fn {
         }
 };
 
-} // namespace _unspecified::match
+} // namespace fn
 
 inline namespace _fn {
 
-inline constexpr _unspecified::match::fn match;
+inline constexpr fn::match_fn match;
 
 }
 

@@ -7,13 +7,8 @@
 #include "tuples/algorithm.hpp"   // IWYU pragma: export
 #include "tuples/apply.hpp"       // IWYU pragma: export
 #include "tuples/concepts.hpp"    // IWYU pragma: export
-#include "tuples/construct.hpp"   // IWYU pragma: export
 #include "tuples/projected.hpp"   // IWYU pragma: export
 #include "tuples/proxy.hpp"       // IWYU pragma: export
-#include "tuples/type_traits.hpp" // IWYU pragma: export
-#include "tuples/utility.hpp"     // IWYU pragma: export
-#include "tuples/views.hpp"       // IWYU pragma: export
-// #include "tuples/tuple.hpp"       // IWYU pragma: export
 #include "tuples/type_traits.hpp" // IWYU pragma: export
 #include "tuples/utility.hpp"     // IWYU pragma: export
 #include "tuples/views.hpp"       // IWYU pragma: export

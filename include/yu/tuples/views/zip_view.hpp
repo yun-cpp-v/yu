@@ -2,11 +2,12 @@
 #ifndef YU_TUPLES_VIEWS_ZIP_VIEW_HPP_
 #define YU_TUPLES_VIEWS_ZIP_VIEW_HPP_
 
+#include "adaptor.hpp"
 #include "all.hpp"
 #include "empty_view.hpp"
 #include "view_interface.hpp"
-#include "yu/tuples/access/get.hpp"
 #include <yu/meta/constant.hpp>
+#include <yu/tuples/access/get.hpp>
 #include <yu/tuples/access/index.hpp>
 #include <yu/tuples/concepts/tuple.hpp>
 #include <yu/tuples/concepts/view.hpp>
@@ -61,23 +62,14 @@ template <typename... Views>
 zip_view(Views&&...) -> zip_view<views::all_t<Views&&>...>;
 
 namespace views {
-namespace _unspecified::zip {
 
-struct adaptor {
-        template <tuple... Tuples>
-        requires (0 < sizeof...(Tuples))
-        static constexpr auto operator()(Tuples&&... tuples) noexcept(noexcept(zip_view{
-            std::forward<Tuples>(tuples)...
-        })) {
-            return zip_view{std::forward<Tuples>(tuples)...};
-        }
-
-        static constexpr auto operator()() noexcept { return empty; }
+inline constexpr adaptor zip = []<tuple... Tuples>(Tuples&&... tuples) {
+    if constexpr (0 < sizeof...(Tuples)) {
+        return zip_view{std::forward<Tuples>(tuples)...};
+    } else {
+        return empty;
+    }
 };
-
-} // namespace _unspecified::zip
-
-inline constexpr _unspecified::zip::adaptor zip;
 
 } // namespace views
 

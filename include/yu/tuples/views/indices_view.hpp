@@ -2,6 +2,7 @@
 #ifndef YU_TUPLES_VIEWS_INDICES_VIEW_HPP_
 #define YU_TUPLES_VIEWS_INDICES_VIEW_HPP_
 
+#include "adaptor_closure.hpp"
 #include "iota_view.hpp"
 #include <cstddef>
 
@@ -12,18 +13,7 @@ using indices_view = iota_view<0, Size>;
 
 namespace views {
 
-namespace _unspecified::indices {
-
-struct fn {
-        template <std::size_t Size>
-        static constexpr auto operator()(index_t<Size>) noexcept {
-            return indices_view<Size>{};
-        }
-};
-
-} // namespace _unspecified::indices
-
-inline constexpr _unspecified::indices::fn indices;
+inline constexpr adaptor_closure indices = []<std::size_t Size>(index_t<Size>) { return indices_view<Size>{}; };
 
 } // namespace views
 

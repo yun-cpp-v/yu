@@ -11,11 +11,11 @@
 
 namespace yu::tuples {
 
-namespace _unspecified::find {
+namespace fn {
 
-struct fn {
+struct find_fn {
         template <tuple Tuple, typename T, typename Proj = std::identity>
-        static constexpr std::optional<std::size_t> operator()(Tuple&& tuple, const T& value, Proj proj = {}) {
+        constexpr std::optional<std::size_t> YU_STATELESS_CALL_OPERATOR(Tuple&& tuple, const T& value, Proj proj = {}) {
             return tuples::find_if(
                 std::forward<Tuple>(tuple),
                 std::bind_back(std::ranges::equal_to{}, value),
@@ -24,11 +24,11 @@ struct fn {
         }
 };
 
-} // namespace _unspecified::find
+} // namespace fn
 
 inline namespace _fn {
 
-inline constexpr _unspecified::find::fn find;
+inline constexpr fn::find_fn find;
 
 }
 

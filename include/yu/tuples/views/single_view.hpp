@@ -3,6 +3,7 @@
 #define YU_TUPLES_VIEWS_SINGLE_VIEW_HPP_
 
 #include "view_interface.hpp"
+#include <yu/config/stateless_call_operator.hpp>
 #include <yu/tuples/access/index.hpp>
 #include <concepts>
 #include <cstddef>
@@ -35,19 +36,19 @@ single_view(T) -> single_view<T>;
 
 namespace views {
 
-namespace _unspecified::single {
+namespace fn {
 
-struct fn {
+struct single_fn {
         template <std::move_constructible T>
         requires std::is_object_v<T>
-        static constexpr decltype(auto) operator()(T&& value) noexcept(noexcept(single_view{std::forward<T>(value)})) {
+        constexpr auto YU_STATELESS_CALL_OPERATOR(T&& value) {
             return single_view{std::forward<T>(value)};
         }
 };
 
-} // namespace _unspecified::single
+} // namespace fn
 
-inline constexpr _unspecified::single::fn single;
+inline constexpr fn::single_fn single;
 
 } // namespace views
 

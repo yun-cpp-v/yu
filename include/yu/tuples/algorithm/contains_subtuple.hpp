@@ -3,6 +3,7 @@
 #define YU_TUPLES_ALGORITHM_CONTAINS_SUBTUPLE_HPP_
 
 #include "search.hpp"
+#include <yu/config/stateless_call_operator.hpp>
 #include <yu/functional/predicates.hpp>
 #include <yu/tuples/concepts/tuple.hpp>
 #include <yu/tuples/projected.hpp>
@@ -11,10 +12,9 @@
 
 namespace yu::tuples {
 
-namespace _unspecified::contains_subtuple {
+namespace fn {
 
-struct fn {
-    public:
+struct contains_subtuple_fn {
         template <
             tuple Tuple1,
             tuple Tuple2,
@@ -22,7 +22,7 @@ struct fn {
             typename Proj1 = std::identity,
             typename Proj2 = std::identity
         >
-        static constexpr bool operator()(
+        constexpr bool YU_STATELESS_CALL_OPERATOR(
             Tuple1&& tuple1,
             Tuple2&& tuple2,
             Pred     pred  = {},
@@ -41,11 +41,11 @@ struct fn {
         }
 };
 
-} // namespace _unspecified::contains_subtuple
+} // namespace fn
 
 inline namespace _fn {
 
-inline constexpr _unspecified::contains_subtuple::fn contains_subtuple;
+inline constexpr fn::contains_subtuple_fn contains_subtuple;
 
 }
 

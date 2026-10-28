@@ -5,10 +5,10 @@
 // yutool: export headers
 #include "concepts/applicable.hpp"                  // IWYU pragma: export
 #include "concepts/constructible_from_elements.hpp" // IWYU pragma: export
-#include "concepts/elementwise_meta_predicate.hpp"  // IWYU pragma: export
 #include "concepts/elementwise_unary_invocable.hpp" // IWYU pragma: export
 #include "concepts/elementwise_unary_predicate.hpp" // IWYU pragma: export
 #include "concepts/tuple.hpp"                       // IWYU pragma: export
+#include "concepts/tuple_of_tuples.hpp"             // IWYU pragma: export
 #include "concepts/view.hpp"                        // IWYU pragma: export
 
 #endif

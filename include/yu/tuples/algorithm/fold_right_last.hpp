@@ -4,6 +4,7 @@
 
 #include "_detail/fold_right_impl.hpp"
 #include "_detail/right_fold_concepts.hpp"
+#include <yu/config/stateless_call_operator.hpp>
 #include <yu/tuples/access/get.hpp>
 #include <yu/tuples/access/index.hpp>
 #include <yu/tuples/apply.hpp>
@@ -14,13 +15,12 @@
 
 namespace yu::tuples {
 
-namespace _unspecified::fold_right_last {
+namespace fn {
 
-struct fn {
-    public:
+struct fold_right_last_fn {
         template <tuple Tuple, typename Fn>
         requires _detail::right_foldable_last<Fn, Tuple>
-        static constexpr auto operator()(Tuple&& tuple, Fn f) {
+        constexpr auto YU_STATELESS_CALL_OPERATOR(Tuple&& tuple, Fn f) {
             constexpr std::size_t size = size_v<Tuple>;
 
             return [&]<std::size_t... Idx>(std::index_sequence<Idx...>) {
@@ -29,11 +29,11 @@ struct fn {
         }
 };
 
-} // namespace _unspecified::fold_right_last
+} // namespace fn
 
 inline namespace _fn {
 
-inline constexpr _unspecified::fold_right_last::fn fold_right_last;
+inline constexpr fn::fold_right_last_fn fold_right_last;
 
 }
 

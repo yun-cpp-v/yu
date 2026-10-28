@@ -2,6 +2,7 @@
 #ifndef YU_TUPLES_VIEWS_IOTA_VIEW_HPP_
 #define YU_TUPLES_VIEWS_IOTA_VIEW_HPP_
 
+#include "adaptor_closure.hpp"
 #include "view_interface.hpp"
 #include <yu/tuples/access/index.hpp>
 #include <yu/tuples/type_traits.hpp>
@@ -31,19 +32,9 @@ iota_view(index_t<Start>, index_t<End>) -> iota_view<Start, End>;
 
 namespace views {
 
-namespace _unspecified::iota {
-
-struct fn {
-        template <std::size_t Start, std::size_t End>
-        requires (Start <= End)
-        static constexpr auto operator()(index_t<Start>, index_t<End>) noexcept {
-            return iota_view<Start, End>{};
-        }
-};
-
-} // namespace _unspecified::iota
-
-inline constexpr _unspecified::iota::fn iota;
+inline constexpr adaptor_closure iota
+    = []<std::size_t Start, std::size_t End>(index_t<Start>, index_t<End>) requires (Start <= End)
+{ return iota_view<Start, End>{}; };
 
 } // namespace views
 

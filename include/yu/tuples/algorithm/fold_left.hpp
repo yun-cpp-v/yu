@@ -4,19 +4,19 @@
 
 #include "_detail/fold_left_impl.hpp"
 #include "_detail/left_fold_concepts.hpp"
+#include <yu/config/stateless_call_operator.hpp>
 #include <yu/tuples/apply.hpp>
 #include <yu/tuples/concepts/tuple.hpp>
 #include <utility>
 
 namespace yu::tuples {
 
-namespace _unspecified::fold_left {
+namespace fn {
 
-struct fn {
-    public:
+struct fold_left_fn {
         template <tuple Tuple, typename T, typename Fn>
         requires _detail::left_foldable<Fn, T, Tuple>
-        static constexpr auto operator()(Tuple&& tuple, T init, Fn f) {
+        constexpr auto YU_STATELESS_CALL_OPERATOR(Tuple&& tuple, T init, Fn f) {
             if constexpr (size_v<Tuple> == 0) {
                 return init;
             } else {
@@ -30,11 +30,11 @@ struct fn {
         }
 };
 
-} // namespace _unspecified::fold_left
+} // namespace fn
 
 inline namespace _fn {
 
-inline constexpr _unspecified::fold_left::fn fold_left;
+inline constexpr fn::fold_left_fn fold_left;
 
 }
 

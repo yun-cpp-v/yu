@@ -2,8 +2,8 @@
 #ifndef YU_TUPLES_VIEWS_DROP_VIEW_HPP_
 #define YU_TUPLES_VIEWS_DROP_VIEW_HPP_
 
+#include "adaptor.hpp"
 #include "all.hpp"
-#include "partial_closure.hpp"
 #include "view_interface.hpp"
 #include <yu/tuples/access/index.hpp>
 #include <yu/tuples/concepts/tuple.hpp>
@@ -48,27 +48,10 @@ drop_view(Tuple&&, index_t<Count>) -> drop_view<views::all_t<Tuple&&>, Count>;
 
 namespace views {
 
-namespace _unspecified::drop {
-
-struct adaptor {
-        template <tuple Tuple, std::size_t Count>
-        static constexpr auto operator()(Tuple&& tuple, index_t<Count> count) noexcept(
-            noexcept(drop_view{std::forward<Tuple>(tuple), count})
-        ) {
-            return drop_view{std::forward<Tuple>(tuple), count};
-        }
-
-        template <std::size_t Count>
-        static constexpr auto operator()(index_t<Count> count) noexcept(
-            noexcept(make_partial_closure(adaptor{}, count))
-        ) {
-            return make_partial_closure(adaptor{}, count);
-        }
+inline constexpr adaptor drop = []<tuple Tuple, std::size_t Count>(Tuple&& tuple, index_t<Count> count) {
+    return drop_view{std::forward<Tuple>(tuple), count};
+    ;
 };
-
-} // namespace _unspecified::drop
-
-inline constexpr _unspecified::drop::adaptor drop;
 
 } // namespace views
 

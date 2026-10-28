@@ -2,6 +2,7 @@
 #ifndef YU_TUPLES_ALGORITHM_FIND_END_HPP_
 #define YU_TUPLES_ALGORITHM_FIND_END_HPP_
 
+#include <yu/config/stateless_call_operator.hpp>
 #include <yu/functional/predicates.hpp>
 #include <yu/functional/with_fallback.hpp>
 #include <yu/tuples/access/get.hpp>
@@ -16,10 +17,9 @@
 
 namespace yu::tuples {
 
-namespace _unspecified::find_end {
+namespace fn {
 
-struct fn {
-    public:
+struct find_end_fn {
         template <
             tuple Tuple1,
             tuple Tuple2,
@@ -27,7 +27,7 @@ struct fn {
             typename Proj1 = std::identity,
             typename Proj2 = std::identity
         >
-        static constexpr std::optional<std::size_t> operator()(
+        constexpr std::optional<std::size_t> YU_STATELESS_CALL_OPERATOR(
             Tuple1&& tuple1,
             Tuple2&& tuple2,
             Pred     pred  = {},
@@ -69,11 +69,11 @@ struct fn {
         }
 };
 
-} // namespace _unspecified::find_end
+} // namespace fn
 
 inline namespace _fn {
 
-inline constexpr _unspecified::find_end::fn find_end;
+inline constexpr fn::find_end_fn find_end;
 
 }
 

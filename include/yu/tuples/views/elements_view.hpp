@@ -2,13 +2,13 @@
 #ifndef YU_TUPLES_VIEWS_ELEMENTS_VIEW_HPP_
 #define YU_TUPLES_VIEWS_ELEMENTS_VIEW_HPP_
 
-#include "_detail/tuple_of_tuples.hpp"
+#include "adaptor.hpp"
 #include "all.hpp"
-#include "partial_closure.hpp"
 #include "view_interface.hpp"
 #include <yu/tuples/access/index.hpp>
 #include <yu/tuples/access/size.hpp>
 #include <yu/tuples/concepts/tuple.hpp>
+#include <yu/tuples/concepts/tuple_of_tuples.hpp>
 #include <yu/tuples/concepts/view.hpp>
 #include <yu/tuples/utility/index_sequence_for.hpp>
 #include <utility>
@@ -28,7 +28,7 @@ concept each_tuple_gettable_at = each_tuple_gettable_at_impl<N, T>(indices_for<T
 } // namespace _detail::elements_view
 
 template <view View, std::size_t N>
-requires _detail::tuple_of_tuples<View> && _detail::elements_view::each_tuple_gettable_at<N, View>
+requires tuple_of_tuples<View> && _detail::elements_view::each_tuple_gettable_at<N, View>
 class elements_view : public view_interface<elements_view<View, N>> {
     private:
         View base_;
@@ -58,27 +58,9 @@ elements_view(Tuple&&, index_t<N>) -> elements_view<views::all_t<Tuple&&>, N>;
 
 namespace views {
 
-namespace _unspecified::elements {
-
-struct adaptor {
-        template <tuple Tuple, std::size_t N>
-        requires tuples::_detail::tuple_of_tuples<Tuple>
-                 && tuples::_detail::elements_view::each_tuple_gettable_at<N, Tuple>
-        static constexpr auto operator()(Tuple&& tuple, index_t<N> n) noexcept(
-            noexcept(elements_view{std::forward<Tuple>(tuple), n})
-        ) {
-            return elements_view{std::forward<Tuple>(tuple), n};
-        }
-
-        template <std::size_t N>
-        static constexpr auto operator()(index_t<N> n) noexcept(noexcept(make_partial_closure(adaptor{}, n))) {
-            return make_partial_closure(adaptor{}, n);
-        }
-};
-
-} // namespace _unspecified::elements
-
-inline constexpr _unspecified::elements::adaptor elements;
+inline constexpr adaptor elements = []<tuple_of_tuples Tuple, std::size_t N>(Tuple&& tuple, index_t<N> n)
+                                        requires tuples::_detail::elements_view::each_tuple_gettable_at<N, Tuple>
+{ return elements_view{std::forward<Tuple>(tuple), n}; };
 
 } // namespace views
 

@@ -86,6 +86,7 @@ IncludeCategories:
 IndentAccessModifiers: true
 IndentCaseBlocks: true
 IndentCaseLabels: true
+IndentPPDirectives: AfterHash
 IndentRequiresClause: true
 IndentWidth: 4
 IndentWrappedFunctionNames: true
@@ -111,6 +112,7 @@ PenaltyBreakScopeResolution: 1000
 PenaltyBreakTemplateDeclaration: 0
 PenaltyReturnTypeOnItsOwnLine: 1000
 PointerAlignment: Left
+PPIndentWidth: 2
 QualifierAlignment: Custom
 QualifierOrder:
   ["inline", "static", "friend", "constexpr", "const", "volatile", "type"]

@@ -2,6 +2,7 @@
 #ifndef YU_TUPLES_VIEWS_CARTESIAN_PRODUCT_VIEW_HPP_
 #define YU_TUPLES_VIEWS_CARTESIAN_PRODUCT_VIEW_HPP_
 
+#include "adaptor.hpp"
 #include "all.hpp"
 #include "single_view.hpp"
 #include "view_interface.hpp"
@@ -94,22 +95,14 @@ template <typename... Tuples>
 cartesian_product_view(Tuples&&...) -> cartesian_product_view<views::all_t<Tuples&&>...>;
 
 namespace views {
-namespace _unspecified::cartesian_product {
 
-struct adaptor {
-        template <tuple... Tuples>
-        static constexpr auto operator()(Tuples&&... tuples) noexcept(noexcept(cartesian_product_view{
-            std::forward<Tuples>(tuples)...
-        })) {
-            return cartesian_product_view{std::forward<Tuples>(tuples)...};
-        }
-
-        static constexpr auto operator()() noexcept { return views::single(std::tuple{}); }
+inline constexpr adaptor cartesian_product = []<tuple... Tuples>(Tuples&&... tuples) {
+    if constexpr (0 < sizeof...(Tuples)) {
+        return cartesian_product_view{std::forward<Tuples>(tuples)...};
+    } else {
+        return views::single(std::tuple{});
+    }
 };
-
-} // namespace _unspecified::cartesian_product
-
-inline constexpr _unspecified::cartesian_product::adaptor cartesian_product;
 
 } // namespace views
 

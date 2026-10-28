@@ -7,11 +7,17 @@
 
 namespace yu::tuples {
 
-template <std::size_t V>
-using index_t = meta::constant_t<V>;
+/**
+    `std::size_t`型の定数をNTTPに包んで値として扱うための型．
+*/
+template <std::size_t N>
+using index_t = meta::constant_t<N>;
 
-template <std::size_t Idx>
-inline constexpr index_t<Idx> index;
+/**
+    `index_t<N>`の値を簡潔に生成するための変数テンプレート．
+*/
+template <std::size_t N>
+inline constexpr index_t<N> index;
 
 } // namespace yu::tuples
 

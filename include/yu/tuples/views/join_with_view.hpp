@@ -2,17 +2,17 @@
 #ifndef YU_TUPLES_VIEWS_JOIN_WITH_VIEW_HPP_
 #define YU_TUPLES_VIEWS_JOIN_WITH_VIEW_HPP_
 
-#include "_detail/tuple_of_tuples.hpp"
+#include "adaptor.hpp"
 #include "all.hpp"
 #include "empty_view.hpp"
 #include "join_view.hpp"
-#include "partial_closure.hpp"
 #include "single_view.hpp"
 #include "view_interface.hpp"
 #include <yu/tuples/access/get.hpp>
 #include <yu/tuples/access/index.hpp>
 #include <yu/tuples/access/size.hpp>
 #include <yu/tuples/concepts/tuple.hpp>
+#include <yu/tuples/concepts/tuple_of_tuples.hpp>
 #include <yu/tuples/concepts/view.hpp>
 #include <yu/tuples/utility/index_sequence_for.hpp>
 #include <yu/tuples/views/single_view.hpp>
@@ -64,7 +64,7 @@ class separator_insert_view : public tuples::view_interface<separator_insert_vie
 } // namespace _detail::join_with_view
 
 template <view View, view Pattern>
-requires _detail::tuple_of_tuples<View>
+requires tuple_of_tuples<View>
 class join_with_view : public view_interface<join_with_view<View, Pattern>> {
     private:
         using inserter_t = _detail::join_with_view::separator_insert_view<View, Pattern>;
@@ -99,43 +99,14 @@ template <typename Tuple, typename Pattern>
 join_with_view(Tuple&&, Pattern&&) -> join_with_view<views::all_t<Tuple&&>, views::all_t<Pattern&&>>;
 
 namespace views {
-namespace _unspecified::join_with {
 
-struct adaptor {
-        template <tuple Tuple, tuple Pattern>
-        requires tuples::_detail::tuple_of_tuples<Tuple>
-        static constexpr auto operator()(Tuple&& tuple, Pattern&& pattern) noexcept(
-            noexcept(join_with_view{std::forward<Tuple>(tuple), std::forward<Pattern>(pattern)})
-        ) {
-            return join_with_view{std::forward<Tuple>(tuple), std::forward<Pattern>(pattern)};
-        }
-
-        template <tuple Tuple, typename Pattern>
-        requires tuples::_detail::tuple_of_tuples<Tuple>
-        static constexpr auto operator()(Tuple&& tuple, Pattern&& pattern) noexcept(
-            noexcept(join_with_view{std::forward<Tuple>(tuple), views::single(std::forward<Pattern>(pattern))})
-        ) {
-            return join_with_view{std::forward<Tuple>(tuple), views::single(std::forward<Pattern>(pattern))};
-        }
-
-        template <tuple Pattern>
-        static constexpr auto operator()(Pattern&& pattern) noexcept(
-            noexcept(make_partial_closure(adaptor{}, views::all(std::forward<Pattern>(pattern))))
-        ) {
-            return make_partial_closure(adaptor{}, std::forward<Pattern>(pattern));
-        }
-
-        template <typename Pattern>
-        static constexpr auto operator()(Pattern&& pattern) noexcept(
-            noexcept(make_partial_closure(adaptor{}, std::forward<Pattern>(pattern)))
-        ) {
-            return make_partial_closure(adaptor{}, std::forward<Pattern>(pattern));
-        }
+inline constexpr adaptor join_with = []<tuple_of_tuples Tuple, typename Pattern>(Tuple&& tuple, Pattern&& pattern) {
+    if constexpr (tuples::tuple<Pattern>) {
+        return join_with_view{std::forward<Tuple>(tuple), std::forward<Pattern>(pattern)};
+    } else {
+        return join_with_view{std::forward<Tuple>(tuple), views::single(std::forward<Pattern>(pattern))};
+    }
 };
-
-} // namespace _unspecified::join_with
-
-inline constexpr _unspecified::join_with::adaptor join_with;
 
 } // namespace views
 } // namespace yu::tuples

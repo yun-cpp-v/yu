@@ -2,6 +2,7 @@
 #ifndef YU_TUPLES_ALGORITHM_FIND_IF_HPP_
 #define YU_TUPLES_ALGORITHM_FIND_IF_HPP_
 
+#include <yu/config/stateless_call_operator.hpp>
 #include <yu/functional/with_fallback.hpp>
 #include <yu/tuples/access/get.hpp>
 #include <yu/tuples/access/index.hpp>
@@ -16,12 +17,11 @@
 
 namespace yu::tuples {
 
-namespace _unspecified::find_if {
+namespace fn {
 
-struct fn {
-    public:
+struct find_if_fn {
         template <tuple Tuple, typename Pred, typename Proj = std::identity>
-        static constexpr std::optional<std::size_t> operator()(Tuple&& tuple, Pred pred, Proj proj = {}) {
+        constexpr std::optional<std::size_t> YU_STATELESS_CALL_OPERATOR(Tuple&& tuple, Pred pred, Proj proj = {}) {
             auto safe_pred = functional::with_fallback(std::ref(pred), false);
 
             auto test = [&](auto I) {
@@ -40,11 +40,11 @@ struct fn {
         }
 };
 
-} // namespace _unspecified::find_if
+} // namespace fn
 
 inline namespace _fn {
 
-inline constexpr _unspecified::find_if::fn find_if;
+inline constexpr fn::find_if_fn find_if;
 
 }
 

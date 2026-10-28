@@ -1,8 +1,8 @@
 /build/
-/.cache/
+*/.cache/
 /.vscode/
 .clangd
 /memo/
-compile_commands.json
 
 /archive/
+/docs/reference-output/

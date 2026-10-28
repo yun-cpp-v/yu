@@ -2,8 +2,8 @@
 #ifndef YU_TUPLES_VIEWS_AS_RVALUE_VIEW_HPP_
 #define YU_TUPLES_VIEWS_AS_RVALUE_VIEW_HPP_
 
+#include "adaptor_closure.hpp"
 #include "all.hpp"
-#include "tuple_adaptor_closure.hpp"
 #include "view_interface.hpp"
 #include <yu/tuples/access/index.hpp>
 #include <yu/tuples/concepts/view.hpp>
@@ -41,18 +41,9 @@ template <typename Tuple>
 as_rvalue_view(Tuple&&) -> as_rvalue_view<views::all_t<Tuple&&>>;
 
 namespace views {
-namespace _unspecified::as_rvalue {
 
-struct closure : tuple_adaptor_closure<closure> {
-        template <tuple Tuple>
-        static constexpr auto operator()(Tuple&& tuple) noexcept(noexcept(as_rvalue_view{std::forward<Tuple>(tuple)})) {
-            return as_rvalue_view{std::forward<Tuple>(tuple)};
-        }
-};
-
-} // namespace _unspecified::as_rvalue
-
-inline constexpr _unspecified::as_rvalue::closure as_rvalue;
+inline constexpr adaptor_closure as_rvalue
+    = []<tuple Tuple>(Tuple&& tuple) { as_rvalue_view{std::forward<Tuple>(tuple)}; };
 
 } // namespace views
 

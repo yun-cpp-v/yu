@@ -3,6 +3,7 @@
 #define YU_TUPLES_ALGORITHM_MATCH_N_HPP_
 
 #include "search_n.hpp"
+#include <yu/config/stateless_call_operator.hpp>
 #include <yu/functional/predicates.hpp>
 #include <yu/tuples/access/index.hpp>
 #include <yu/tuples/concepts/tuple.hpp>
@@ -14,10 +15,9 @@
 
 namespace yu::tuples {
 
-namespace _unspecified::match_n {
+namespace fn {
 
-struct fn {
-    public:
+struct match_n_fn {
         template <
             tuple Tuple,
             typename T,
@@ -25,7 +25,7 @@ struct fn {
             typename Pred = functional::safe_equal_to,
             typename Proj = std::identity
         >
-        static constexpr auto operator()(
+        constexpr auto YU_STATELESS_CALL_OPERATOR(
             Tuple&&        tuple,
             const T&       value,
             index_t<Count> count,
@@ -40,11 +40,11 @@ struct fn {
         }
 };
 
-} // namespace _unspecified::match_n
+} // namespace fn
 
 inline namespace _fn {
 
-inline constexpr _unspecified::match_n::fn match_n;
+inline constexpr fn::match_n_fn match_n;
 
 }
 

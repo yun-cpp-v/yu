@@ -2,8 +2,8 @@
 #ifndef YU_TUPLES_VIEWS_ENUMERATE_VIEW_HPP_
 #define YU_TUPLES_VIEWS_ENUMERATE_VIEW_HPP_
 
+#include "adaptor_closure.hpp"
 #include "all.hpp"
-#include "tuple_adaptor_closure.hpp"
 #include "view_interface.hpp"
 #include <yu/tuples/access/index.hpp>
 #include <yu/tuples/concepts/tuple.hpp>
@@ -47,18 +47,8 @@ enumerate_view(Tuple&&) -> enumerate_view<views::all_t<Tuple&&>>;
 
 namespace views {
 
-namespace _unspecified::enumerate {
-
-struct closure : tuple_adaptor_closure<closure> {
-        template <tuple Tuple>
-        static constexpr auto operator()(Tuple&& tuple) noexcept(noexcept(enumerate_view{std::forward<Tuple>(tuple)})) {
-            return enumerate_view{std::forward<Tuple>(tuple)};
-        }
-};
-
-} // namespace _unspecified::enumerate
-
-inline constexpr _unspecified::enumerate::closure enumerate;
+inline constexpr adaptor_closure enumerate
+    = []<tuple Tuple>(Tuple&& tuple) { return enumerate_view{std::forward<Tuple>(tuple)}; };
 
 } // namespace views
 

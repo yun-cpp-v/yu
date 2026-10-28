@@ -4,6 +4,5 @@
 
 // yutool: export headers
 #include "concepts/constant_like.hpp" // IWYU pragma: export
-#include "concepts/predicate.hpp"     // IWYU pragma: export
 
 #endif
