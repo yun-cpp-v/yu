@@ -10,7 +10,7 @@
 #include <yu/tuples/access/size.hpp>
 #include <yu/tuples/concepts/tuple.hpp>
 #include <yu/tuples/projected.hpp>
-#include <yu/tuples/utility/index_sequence_for.hpp>
+#include <yu/utility/with_indices.hpp>
 #include <algorithm>
 #include <cstddef>
 #include <functional>
@@ -36,31 +36,31 @@ struct mismatch_fn {
             Proj1    proj1 = {},
             Proj2    proj2 = {}
         ) {
-            constexpr std::size_t size1 = size_v<Tuple1>, size2 = size_v<Tuple2>, min_size = std::min(size1, size2);
+            constexpr std::size_t size1    = size_v<std::remove_reference_t<Tuple1>>;
+            constexpr std::size_t size2    = size_v<std::remove_reference_t<Tuple2>>;
+            constexpr std::size_t min_size = std::min(size1, size2);
 
             auto safe_pred = functional::with_fallback(std::ref(pred), false);
 
-            auto test = [&](auto I) {
+            auto test = [&](auto i) {
                 return std::invoke(
                     safe_pred,
-                    std::invoke(proj1, tuples::get(std::forward<Tuple1>(tuple1), I)),
-                    std::invoke(proj2, tuples::get(std::forward<Tuple2>(tuple2), I))
+                    std::invoke(proj1, tuples::get(std::forward<Tuple1>(tuple1), i)),
+                    std::invoke(proj2, tuples::get(std::forward<Tuple2>(tuple2), i))
                 );
             };
 
-            auto find_mismatched_index = [&]<std::size_t... Idx>(std::index_sequence<Idx...>) {
+            return with_indices<min_size>([&](auto... idx) {
                 std::optional<std::size_t> result;
 
-                (void)((!test(index<Idx>) && (result = Idx, true)) || ...);
+                (void)((!test(idx) && (result = std::size_t(idx), true)) || ...);
 
-                if (!result.has_value()) {
-                    if constexpr (size1 != size2) result = min_size;
+                if constexpr (size1 != size2) {
+                    if (!result.has_value()) result = min_size;
                 }
 
                 return result;
-            };
-
-            return find_mismatched_index(std::make_index_sequence<min_size>{});
+            });
         }
 };
 

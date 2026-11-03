@@ -2,17 +2,19 @@
 #ifndef YU_TUPLES_VIEWS_CARTESIAN_PRODUCT_VIEW_HPP_
 #define YU_TUPLES_VIEWS_CARTESIAN_PRODUCT_VIEW_HPP_
 
-#include "adaptor.hpp"
 #include "all.hpp"
 #include "single_view.hpp"
+#include "tuple_adaptor_closure.hpp"
 #include "view_interface.hpp"
-#include <yu/meta/constant.hpp>
+#include <yu/config/constructor_object.hpp>
 #include <yu/tuples/access/get.hpp>
 #include <yu/tuples/access/index.hpp>
 #include <yu/tuples/access/size.hpp>
 #include <yu/tuples/apply.hpp>
 #include <yu/tuples/concepts/tuple.hpp>
 #include <yu/tuples/concepts/view.hpp>
+#include <yu/utility/constant.hpp>
+#include <yu/utility/with_indices.hpp>
 #include <algorithm>
 #include <array>
 #include <ranges>
@@ -35,13 +37,13 @@ class cartesian_product_view : public view_interface<cartesian_product_view<View
                 std::array<indices_t, size> indices_table;
 
                 std::ranges::transform(indices_table_view, indices_table.begin(), [](auto tuple) {
-                    return tuples::apply([](auto... index) { return indices_t{index...}; }, tuple);
+                    return apply([](auto... index) { return indices_t{index...}; }, tuple);
                 });
 
                 return indices_table;
             }();
 
-            return meta::constant<result>;
+            return constant<result>;
         }
 
         static constexpr auto indices_table_ = make_indices_table();
@@ -67,13 +69,13 @@ class cartesian_product_view : public view_interface<cartesian_product_view<View
         static consteval bool is_nothrow() {
             constexpr auto indices = indices_table_[index<Idx>];
 
-            return []<std::size_t... Dims>(std::index_sequence<Dims...>) {
-                return (noexcept(tuples::get(std::declval<Self>().base(index<Dims>), indices[index<Dims>])) && ...);
-            }(std::index_sequence_for<Views...>{});
+            return with_indices<sizeof...(Views)>([](auto... idx) {
+                return (noexcept(tuples::get(std::declval<Self>().base(idx), indices[idx])) && ...);
+            });
         }
 
     public:
-        static constexpr auto size = meta::constant_invoke(meta::constant<&indices_table_t::size>, indices_table_);
+        static constexpr auto size = constant_invoke(constant<&indices_table_t::size>, indices_table_);
 
         constexpr explicit cartesian_product_view(Views... views) :
             bases_(std::move(views)...) {}
@@ -83,11 +85,9 @@ class cartesian_product_view : public view_interface<cartesian_product_view<View
         constexpr decltype(auto) get(this Self&& self) noexcept(is_nothrow<Idx, Self>()) {
             constexpr auto indices = indices_table_[index<Idx>];
 
-            return [&]<std::size_t... Dims>(std::index_sequence<Dims...>) {
-                return std::forward_as_tuple(
-                    tuples::get(std::forward<Self>(self).base(index<Dims>), indices[index<Dims>])...
-                );
-            }(std::index_sequence_for<Views...>{});
+            return with_indices<sizeof...(Views)>([&](auto... idx) {
+                return std::forward_as_tuple(tuples::get(std::forward<Self>(self).base(idx), indices[idx])...);
+            });
         }
 };
 

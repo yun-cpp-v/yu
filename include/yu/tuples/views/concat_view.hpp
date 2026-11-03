@@ -2,14 +2,14 @@
 #ifndef YU_TUPLES_VIEWS_CONCAT_VIEW_HPP_
 #define YU_TUPLES_VIEWS_CONCAT_VIEW_HPP_
 
-#include "adaptor.hpp"
 #include "all.hpp"
 #include "join_view.hpp"
+#include "tuple_adaptor_closure.hpp"
 #include "view_interface.hpp"
+#include <yu/config/constructor_object.hpp>
 #include <yu/tuples/access/index.hpp>
 #include <yu/tuples/concepts/tuple.hpp>
 #include <yu/tuples/concepts/view.hpp>
-#include <yu/tuples/utility/index_sequence_for.hpp>
 #include <tuple>
 #include <utility>
 
@@ -18,10 +18,7 @@ namespace yu::tuples {
 template <view... Views>
 class concat_view : public view_interface<concat_view<Views...>> {
     private:
-        using base_tuple_t = std::tuple<Views...>;
-        using base_t       = join_view<base_tuple_t>;
-
-        base_t base_;
+        join_view<std::tuple<Views...>> base_;
 
         template <typename Self>
         constexpr decltype(auto) base(this Self&& self) noexcept {
@@ -29,10 +26,10 @@ class concat_view : public view_interface<concat_view<Views...>> {
         }
 
     public:
-        static constexpr auto size = base_t::size;
+        static constexpr auto size = join_view<std::tuple<Views...>>::size;
 
         constexpr explicit concat_view(Views... views) :
-            base_(base_tuple_t{std::move(views)...}) {}
+            base_(std::forward_as_tuple(std::move(views)...)) {}
 
         template <std::size_t Idx, typename Self>
         requires (Idx < size)
@@ -48,8 +45,7 @@ concat_view(Tuples&&...) -> concat_view<views::all_t<Tuples&&>...>;
 
 namespace views {
 
-inline constexpr adaptor concat
-    = []<tuple... Tuples>(Tuples&&... tuples) { return concat_view{std::forward<Tuples>(tuples)...}; };
+inline constexpr adaptor concat = YU_CONSTRUCTOR_OBJECT(concat_view);
 
 } // namespace views
 

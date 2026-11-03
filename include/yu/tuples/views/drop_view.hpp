@@ -2,14 +2,15 @@
 #ifndef YU_TUPLES_VIEWS_DROP_VIEW_HPP_
 #define YU_TUPLES_VIEWS_DROP_VIEW_HPP_
 
-#include "adaptor.hpp"
 #include "all.hpp"
+#include "slice_view.hpp"
+#include "tuple_adaptor_closure.hpp"
 #include "view_interface.hpp"
+#include <yu/config/constructor_object.hpp>
 #include <yu/tuples/access/index.hpp>
 #include <yu/tuples/concepts/tuple.hpp>
 #include <yu/tuples/concepts/view.hpp>
 #include <yu/tuples/type_traits/element_type.hpp>
-#include <algorithm>
 #include <cstddef>
 #include <utility>
 
@@ -18,10 +19,7 @@ namespace yu::tuples {
 template <view View, std::size_t Count>
 class drop_view : public view_interface<drop_view<View, Count>> {
     private:
-        View base_;
-
-        static constexpr size<View>                           base_size_;
-        static constexpr index_t<std::min(Count, base_size_)> drop_count_;
+        slice_view<View, Count, size_v<View>> base_;
 
         template <typename Self>
         constexpr decltype(auto) base(this Self&& self) noexcept {
@@ -29,17 +27,14 @@ class drop_view : public view_interface<drop_view<View, Count>> {
         }
 
     public:
-        static constexpr auto size = base_size_ - drop_count_;
-
-        constexpr explicit drop_view(View view) :
-            base_(std::move(view)) {}
+        static constexpr auto size = slice_view<View, Count, size_v<View>>::size;
 
         template <std::size_t Idx, typename Self>
         requires (Idx < size)
         constexpr decltype(auto) get(this Self&& self) noexcept(
-            noexcept(tuples::get(std::forward<Self>(self).base(), drop_count_ + index<Idx>))
+            noexcept(tuples::get(std::forward<Self>(self).base(), index<Idx>))
         ) {
-            return tuples::get(std::forward<Self>(self).base(), drop_count_ + index<Idx>);
+            return tuples::get(std::forward<Self>(self).base(), index<Idx>);
         }
 };
 
@@ -48,10 +43,7 @@ drop_view(Tuple&&, index_t<Count>) -> drop_view<views::all_t<Tuple&&>, Count>;
 
 namespace views {
 
-inline constexpr adaptor drop = []<tuple Tuple, std::size_t Count>(Tuple&& tuple, index_t<Count> count) {
-    return drop_view{std::forward<Tuple>(tuple), count};
-    ;
-};
+inline constexpr adaptor drop = YU_CONSTRUCTOR_OBJECT(drop_view);
 
 } // namespace views
 

@@ -2,9 +2,10 @@
 #ifndef YU_TUPLES_VIEWS_TRANSFORM_VIEW_HPP_
 #define YU_TUPLES_VIEWS_TRANSFORM_VIEW_HPP_
 
-#include "adaptor.hpp"
 #include "all.hpp"
+#include "tuple_adaptor_closure.hpp"
 #include "view_interface.hpp"
+#include <yu/config/constructor_object.hpp>
 #include <yu/tuples/concepts/elementwise_unary_invocable.hpp>
 #include <yu/tuples/concepts/tuple.hpp>
 #include <yu/tuples/concepts/view.hpp>
@@ -58,9 +59,7 @@ transform_view(Tuple&&, Fn) -> transform_view<views::all_t<Tuple&&>, Fn>;
 
 namespace views {
 
-inline constexpr adaptor transform
-    = []<tuple Tuple, typename Fn>(Tuple&& tuple, Fn&& fn) requires elementwise_unary_regular_invocable<Fn, Tuple>
-{ return transform_view{std::forward<Tuple>(tuple), std::forward<Fn>(fn)}; };
+inline constexpr adaptor transform = YU_CONSTRUCTOR_OBJECT(transform_view);
 
 } // namespace views
 

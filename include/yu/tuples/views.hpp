@@ -3,8 +3,6 @@
 #define YU_TUPLES_VIEWS_HPP_
 
 // yutool: export headers
-#include "views/adaptor.hpp"                // IWYU pragma: export
-#include "views/adaptor_closure.hpp"        // IWYU pragma: export
 #include "views/all.hpp"                    // IWYU pragma: export
 #include "views/as_rvalue_view.hpp"         // IWYU pragma: export
 #include "views/cartesian_product_view.hpp" // IWYU pragma: export
@@ -23,8 +21,10 @@
 #include "views/repeat_view.hpp"            // IWYU pragma: export
 #include "views/reverse_view.hpp"           // IWYU pragma: export
 #include "views/single_view.hpp"            // IWYU pragma: export
+#include "views/slice_view.hpp"             // IWYU pragma: export
 #include "views/take_view.hpp"              // IWYU pragma: export
 #include "views/transform_view.hpp"         // IWYU pragma: export
+#include "views/tuple_adaptor_closure.hpp"  // IWYU pragma: export
 #include "views/view_base.hpp"              // IWYU pragma: export
 #include "views/view_interface.hpp"         // IWYU pragma: export
 #include "views/zip_view.hpp"               // IWYU pragma: export

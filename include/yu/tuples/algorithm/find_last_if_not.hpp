@@ -4,10 +4,8 @@
 
 #include "find_last_if.hpp"
 #include <yu/config/stateless_call_operator.hpp>
-#include <yu/tuples/concepts/elementwise_unary_predicate.hpp>
 #include <yu/tuples/concepts/tuple.hpp>
 #include <yu/tuples/projected.hpp>
-#include <yu/tuples/utility/index_sequence_for.hpp>
 #include <cstddef>
 #include <functional>
 #include <utility>

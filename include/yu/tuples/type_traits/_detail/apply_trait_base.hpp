@@ -4,7 +4,6 @@
 
 #include "yu/tuples/access/size.hpp"
 #include <yu/tuples/type_traits/element_type.hpp>
-#include <yu/tuples/utility/index_sequence_for.hpp>
 #include <utility>
 
 namespace yu::tuples::_detail {
@@ -30,7 +29,8 @@ struct apply_trait_base_impl<std::index_sequence<Idx...>, InvocationTrait, Tuple
     InvocationTrait<Args..., Fn, element_type_t<Idx, Tuple>...> {};
 
 template <template <typename...> typename InvocationTrait, typename Tuple, typename Fn, typename... Args>
-using apply_trait_base = apply_trait_base_impl<index_sequence_for<Tuple>, InvocationTrait, Tuple, Fn, Args...>;
+using apply_trait_base
+    = apply_trait_base_impl<std::make_index_sequence<size_v<Tuple>>, InvocationTrait, Tuple, Fn, Args...>;
 
 } // namespace yu::tuples::_detail
 

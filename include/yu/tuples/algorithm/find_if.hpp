@@ -9,7 +9,7 @@
 #include <yu/tuples/concepts/elementwise_unary_predicate.hpp>
 #include <yu/tuples/concepts/tuple.hpp>
 #include <yu/tuples/projected.hpp>
-#include <yu/tuples/utility/index_sequence_for.hpp>
+#include <yu/utility/with_indices.hpp>
 #include <cstddef>
 #include <functional>
 #include <optional>
@@ -22,21 +22,21 @@ namespace fn {
 struct find_if_fn {
         template <tuple Tuple, typename Pred, typename Proj = std::identity>
         constexpr std::optional<std::size_t> YU_STATELESS_CALL_OPERATOR(Tuple&& tuple, Pred pred, Proj proj = {}) {
+            constexpr std::size_t size = size_v<std::remove_reference_t<Tuple>>;
+
             auto safe_pred = functional::with_fallback(std::ref(pred), false);
 
             auto test = [&](auto I) {
                 return std::invoke(safe_pred, std::invoke(proj, tuples::get(std::forward<Tuple>(tuple), I)));
             };
 
-            auto find_index = [&]<std::size_t... Idx>(std::index_sequence<Idx...>) {
+            return with_indices<size>([&](auto... idx) {
                 std::optional<std::size_t> result;
 
-                (void)((test(index<Idx>) && (result = Idx, true)) || ...);
+                (void)((test(idx) && (result = idx, true)) || ...);
 
                 return result;
-            };
-
-            return find_index(indices_for<Tuple>);
+            });
         }
 };
 

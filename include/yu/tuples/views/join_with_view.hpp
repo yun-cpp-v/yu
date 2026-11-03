@@ -2,11 +2,11 @@
 #ifndef YU_TUPLES_VIEWS_JOIN_WITH_VIEW_HPP_
 #define YU_TUPLES_VIEWS_JOIN_WITH_VIEW_HPP_
 
-#include "adaptor.hpp"
 #include "all.hpp"
 #include "empty_view.hpp"
 #include "join_view.hpp"
 #include "single_view.hpp"
+#include "tuple_adaptor_closure.hpp"
 #include "view_interface.hpp"
 #include <yu/tuples/access/get.hpp>
 #include <yu/tuples/access/index.hpp>
@@ -14,7 +14,6 @@
 #include <yu/tuples/concepts/tuple.hpp>
 #include <yu/tuples/concepts/tuple_of_tuples.hpp>
 #include <yu/tuples/concepts/view.hpp>
-#include <yu/tuples/utility/index_sequence_for.hpp>
 #include <yu/tuples/views/single_view.hpp>
 #include <cstddef>
 #include <type_traits>

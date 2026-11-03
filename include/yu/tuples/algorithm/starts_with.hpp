@@ -10,7 +10,7 @@
 #include <yu/tuples/access/size.hpp>
 #include <yu/tuples/concepts/tuple.hpp>
 #include <yu/tuples/projected.hpp>
-#include <yu/tuples/utility/index_sequence_for.hpp>
+#include <yu/utility/with_indices.hpp>
 #include <cstddef>
 #include <functional>
 #include <utility>
@@ -34,23 +34,24 @@ struct starts_with_fn {
             Proj1    proj1 = {},
             Proj2    proj2 = {}
         ) {
-            constexpr std::size_t size1 = size_v<Tuple1>, size2 = size_v<Tuple2>;
+            constexpr std::size_t size1 = size_v<std::remove_reference_t<Tuple1>>;
+            constexpr std::size_t size2 = size_v<std::remove_reference_t<Tuple2>>;
 
             if constexpr (size1 < size2) {
                 return false;
             } else {
                 auto safe_pred = functional::with_fallback(std::ref(pred), false);
 
-                return [&]<std::size_t... Idx>(std::index_sequence<Idx...>) {
+                return with_indices<size2>([&](auto... idx) {
                     return (
                         std::invoke(
                             safe_pred,
-                            std::invoke(proj1, tuples::get(std::forward<Tuple1>(tuple1), index<Idx>)),
-                            std::invoke(proj2, tuples::get(std::forward<Tuple2>(tuple2), index<Idx>))
+                            std::invoke(proj1, tuples::get(std::forward<Tuple1>(tuple1), idx)),
+                            std::invoke(proj2, tuples::get(std::forward<Tuple2>(tuple2), idx))
                         )
                         && ...
                     );
-                }(indices_for<Tuple2>);
+                });
             }
         }
 };

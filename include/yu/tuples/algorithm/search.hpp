@@ -10,7 +10,7 @@
 #include <yu/tuples/access/size.hpp>
 #include <yu/tuples/concepts/tuple.hpp>
 #include <yu/tuples/projected.hpp>
-#include <yu/tuples/utility/index_sequence_for.hpp>
+#include <yu/utility/with_indices.hpp>
 #include <cstddef>
 #include <functional>
 #include <optional>
@@ -35,36 +35,38 @@ struct search_fn {
             Proj1    proj1 = {},
             Proj2    proj2 = {}
         ) {
-            constexpr std::size_t size1 = size_v<Tuple1>, size2 = size_v<Tuple2>;
+            constexpr std::size_t size1 = size_v<std::remove_reference_t<Tuple1>>;
+            constexpr std::size_t size2 = size_v<std::remove_reference_t<Tuple2>>;
 
             if constexpr (size1 < size2) {
                 return std::nullopt;
             } else {
                 auto safe_pred = functional::with_fallback(std::ref(pred), false);
 
-                auto matched_at = [&](auto Offset) {
-                    return [&]<std::size_t... Idx>(std::index_sequence<Idx...>) {
+                auto matched_at = [&](auto offset) {
+                    return with_indices<size2>([&](auto... idx) {
                         return (
                             std::invoke(
                                 safe_pred,
-                                std::invoke(proj1, tuples::get(std::forward<Tuple1>(tuple1), Offset + index<Idx>)),
-                                std::invoke(proj2, tuples::get(std::forward<Tuple2>(tuple2), index<Idx>))
+                                std::invoke(
+                                    proj1,
+                                    tuples::get(std::forward<Tuple1>(tuple1), offset + idx),
+                                    std::invoke(proj2, tuples::get(std::forward<Tuple2>(tuple2), idx))
+                                )
                             )
                             && ...
                         );
-                    }(indices_for<Tuple2>);
+                    });
                 };
+            };
 
-                auto find_matched_offset = [&]<std::size_t... Offsets>(std::index_sequence<Offsets...>) {
-                    std::optional<std::size_t> result;
+            return with_indices<size1 - size2 + 2>([&](auto... offset) {
+                std::optional<std::size_t> result;
 
-                    (void)((matched_at(index<Offsets>) && (result = Offsets, true)) || ...);
+                (void)((matched_at(offset) && (result = std::size_t(offset), true)) || ...);
 
-                    return result;
-                };
-
-                return find_matched_offset(std::make_index_sequence<size1 - size2 + 1>{});
-            }
+                return result;
+            });
         }
 };
 

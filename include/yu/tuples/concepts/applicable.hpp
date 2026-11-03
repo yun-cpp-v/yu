@@ -6,11 +6,11 @@
 
 namespace yu::tuples {
 
-template <typename F, typename Tup>
-concept applicable = requires(F&& fn, Tup&& t) { tuples::apply(std::forward<F>(fn), std::forward<Tup>(t)); };
+template <typename Fn, typename Tuple>
+concept applicable = std::invocable<decltype(apply), Fn&&, Tuple&&>;
 
-template <typename F, typename Tup>
-concept regular_applicable = applicable<F, Tup>;
+template <typename Fn, typename Tuple>
+concept regular_applicable = applicable<Fn, Tuple>;
 
 } // namespace yu::tuples
 

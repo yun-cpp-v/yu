@@ -8,7 +8,6 @@
 #include <yu/tuples/concepts/elementwise_unary_invocable.hpp>
 #include <yu/tuples/concepts/tuple.hpp>
 #include <yu/tuples/projected.hpp>
-#include <yu/tuples/utility/index_sequence_for.hpp>
 #include <functional>
 #include <utility>
 
@@ -20,7 +19,7 @@ struct for_each_fn {
         template <tuple Tuple, typename Fn, typename Proj = std::identity>
         requires elementwise_unary_invocable<Fn, projected<Tuple, Proj>>
         constexpr void YU_STATELESS_CALL_OPERATOR(Tuple&& tuple, Fn f, Proj proj = {}) {
-            tuples::apply(
+            apply(
                 [&]<typename... Elems>(Elems&&... elems) {
                     (void)(std::invoke(f, std::invoke(proj, std::forward<Elems>(elems))), ...);
                 },

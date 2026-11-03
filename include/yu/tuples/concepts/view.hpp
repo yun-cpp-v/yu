@@ -3,7 +3,6 @@
 #define YU_TUPLES_CONCEPTS_VIEW_HPP_
 
 #include "tuple.hpp"
-#include <yu/meta/constant.hpp>
 #include <yu/tuples/views/enable_view.hpp>
 #include <concepts>
 

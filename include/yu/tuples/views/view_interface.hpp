@@ -2,9 +2,8 @@
 #ifndef YU_TUPLES_VIEWS_VIEW_INTERFACE_HPP_
 #define YU_TUPLES_VIEWS_VIEW_INTERFACE_HPP_
 
-#include <yu/meta/concepts/constant_like.hpp>
-#include <yu/meta/constant.hpp>
 #include <yu/tuples/access/index.hpp>
+#include <yu/utility/constant.hpp>
 #include <concepts>
 #include <cstddef>
 #include <tuple>
@@ -31,7 +30,7 @@ namespace _detail::view_interface {
 
 template <typename T>
 concept constant_sized = requires {
-    { T::size } -> meta::constant_like_of<std::size_t>;
+    { T::size } -> constant_like_of<std::size_t>;
 };
 
 } // namespace _detail::view_interface

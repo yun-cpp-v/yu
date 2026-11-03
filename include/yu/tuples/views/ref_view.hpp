@@ -6,7 +6,6 @@
 #include <yu/tuples/access/index.hpp>
 #include <yu/tuples/concepts/tuple.hpp>
 #include <yu/tuples/type_traits.hpp>
-#include <concepts>
 #include <cstddef>
 #include <memory>
 #include <type_traits>
@@ -19,18 +18,11 @@ class ref_view : public view_interface<ref_view<Tuple>> {
     private:
         Tuple* base_ptr_;
 
-        // Declaration only
-        static void bind_lvalue(Tuple&);
-        static void bind_lvalue(Tuple&&) = delete;
-
     public:
         static constexpr size<Tuple> size{};
 
-        template <typename T>
-        requires (!std::same_as<std::remove_cvref_t<T>, ref_view>)
-                 && std::convertible_to<T, Tuple&> && requires { bind_lvalue(std::declval<T>()); }
-        constexpr ref_view(T&& tuple) :
-            base_ptr_(std::addressof(static_cast<Tuple&>(std::forward<T>(tuple)))) {}
+        constexpr ref_view(Tuple& tuple) :
+            base_ptr_(std::addressof(tuple)) {}
 
         constexpr Tuple& base() const noexcept { return *base_ptr_; }
 

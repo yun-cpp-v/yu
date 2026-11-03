@@ -3,17 +3,17 @@
 #define YU_TUPLES_CONCEPTS_ELEMENTWISE_UNARY_INVOCABLE_HPP_
 
 #include <yu/tuples/type_traits/element_type.hpp>
-#include <yu/tuples/utility/index_sequence_for.hpp>
+#include <yu/utility/with_indices.hpp>
 #include <concepts>
 #include <cstddef>
-#include <utility>
+#include <type_traits>
 
 namespace yu::tuples {
 
 template <typename Fn, typename Tuple>
-concept elementwise_unary_invocable = []<std::size_t... Idx>(std::index_sequence<Idx...>) {
-    return (std::invocable<Fn, element_type_t<Idx, Tuple>> && ...);
-}(indices_for<Tuple>);
+concept elementwise_unary_invocable = with_indices<size<std::remove_reference_t<Tuple>>::value>([](auto... idx) {
+    return (std::invocable<Fn, element_type_t<std::size_t(idx), Tuple>> && ...);
+});
 
 template <typename Fn, typename Tuple>
 concept elementwise_unary_regular_invocable = elementwise_unary_invocable<Fn, Tuple>;

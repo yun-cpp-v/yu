@@ -6,10 +6,8 @@
 #include <yu/functional/with_fallback.hpp>
 #include <yu/tuples/access/get.hpp>
 #include <yu/tuples/access/index.hpp>
-#include <yu/tuples/concepts/elementwise_unary_predicate.hpp>
 #include <yu/tuples/concepts/tuple.hpp>
 #include <yu/tuples/projected.hpp>
-#include <yu/tuples/utility/index_sequence_for.hpp>
 #include <cstddef>
 #include <functional>
 #include <optional>
@@ -22,7 +20,7 @@ namespace fn {
 struct find_last_if_fn {
         template <tuple Tuple, typename Pred, typename Proj = std::identity>
         constexpr std::optional<std::size_t> YU_STATELESS_CALL_OPERATOR(Tuple&& tuple, Pred pred, Proj proj = {}) {
-            constexpr auto size = size_v<Tuple>;
+            constexpr auto size = size_v<std::remove_reference_t<Tuple>>;
 
             auto safe_pred = functional::with_fallback(std::ref(pred), false);
 
@@ -30,15 +28,13 @@ struct find_last_if_fn {
                 return std::invoke(safe_pred, std::invoke(proj, tuples::get(std::forward<Tuple>(tuple), I)));
             };
 
-            auto find_index = [&]<std::size_t... Idx>(std::index_sequence<Idx...>) {
+            return with_indices<size>([&](auto... idx) {
                 std::optional<std::size_t> result;
 
-                (void)((test(index<size - Idx - 1>) && (result = size - Idx - 1, true)) || ...);
+                (void)((test(index<size> - idx - index<1>) && (result = size - std::size_t(idx) - 1, true)) || ...);
 
                 return result;
-            };
-
-            return find_index(indices_for<Tuple>);
+            });
         }
 };
 

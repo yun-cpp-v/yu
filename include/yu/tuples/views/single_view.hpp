@@ -36,9 +36,9 @@ single_view(T) -> single_view<T>;
 
 namespace views {
 
-namespace fn {
+namespace taco {
 
-struct single_fn {
+struct single_closure {
         template <std::move_constructible T>
         requires std::is_object_v<T>
         constexpr auto YU_STATELESS_CALL_OPERATOR(T&& value) {
@@ -46,9 +46,9 @@ struct single_fn {
         }
 };
 
-} // namespace fn
+} // namespace taco
 
-inline constexpr fn::single_fn single;
+inline constexpr taco::single_closure single;
 
 } // namespace views
 

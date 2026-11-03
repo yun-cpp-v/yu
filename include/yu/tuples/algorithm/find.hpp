@@ -5,7 +5,6 @@
 #include "find_if.hpp"
 #include <yu/tuples/concepts/tuple.hpp>
 #include <yu/tuples/projected.hpp>
-#include <yu/tuples/utility/index_sequence_for.hpp>
 #include <functional>
 #include <optional>
 

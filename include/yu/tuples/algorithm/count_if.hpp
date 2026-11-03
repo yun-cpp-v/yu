@@ -21,7 +21,7 @@ struct count_if_fn {
         constexpr std::size_t YU_STATELESS_CALL_OPERATOR(Tuple&& tuple, Pred pred, Proj proj = {}) {
             auto safe_pred = functional::with_fallback(std::ref(pred), false);
 
-            return tuples::apply(
+            return apply(
                 [&]<typename... Elems>(Elems&&... elems) {
                     return ((std::invoke(safe_pred, std::invoke(proj, std::forward<Elems>(elems))) ? 1 : 0) + ... + 0);
                 },

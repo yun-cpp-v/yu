@@ -2,9 +2,10 @@
 #ifndef YU_TUPLES_VIEWS_REVERSE_VIEW_HPP_
 #define YU_TUPLES_VIEWS_REVERSE_VIEW_HPP_
 
-#include "adaptor_closure.hpp"
 #include "all.hpp"
+#include "tuple_adaptor_closure.hpp"
 #include "view_interface.hpp"
+#include <yu/config/constructor_object.hpp>
 #include <yu/tuples/concepts/tuple.hpp>
 #include <yu/tuples/concepts/view.hpp>
 #include <yu/tuples/type_traits/element_type.hpp>
@@ -42,8 +43,7 @@ reverse_view(Tuple&&) -> reverse_view<views::all_t<Tuple&&>>;
 
 namespace views {
 
-inline constexpr adaptor_closure reverse
-    = []<tuple Tuple>(Tuple&& tuple) { return reverse_view{std::forward<Tuple>(tuple)}; };
+inline constexpr adaptor_closure reverse = YU_CONSTRUCTOR_OBJECT(reverse_view);
 
 } // namespace views
 

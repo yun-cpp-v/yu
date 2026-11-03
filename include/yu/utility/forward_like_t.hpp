@@ -4,11 +4,11 @@
 
 #include <utility>
 
-namespace yu::utility {
+namespace yu {
 
 template <typename T, typename U>
 using forward_like_t = decltype(std::forward_like<T>(std::declval<U>()));
 
-} // namespace yu::utility
+} // namespace yu
 
 #endif

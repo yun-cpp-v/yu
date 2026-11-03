@@ -23,9 +23,9 @@ struct with_fallback_t {
             function_(std::move(function)), fallback_(std::move(fallback)) {}
 
         template <typename Self, typename... Args>
-        requires std::invocable<utility::forward_like_t<Self, Fn>, Args&&...>
+        requires std::invocable<forward_like_t<Self, Fn>, Args&&...>
         constexpr decltype(auto) operator()(this Self&& self, Args&&... args) noexcept(
-            std::is_nothrow_invocable_v<utility::forward_like_t<Self, Fn>, Args&&...>
+            std::is_nothrow_invocable_v<forward_like_t<Self, Fn>, Args&&...>
         ) {
             return std::invoke(std::forward_like<Self>(self.function_), std::forward<Args>(args)...);
         }

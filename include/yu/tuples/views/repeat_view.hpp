@@ -31,14 +31,14 @@ class repeat_view : public view_interface<repeat_view<T, Count>> {
         }
 };
 
-template <typename Tuple, std::size_t Size>
-repeat_view(Tuple, index_t<Size>) -> repeat_view<Tuple, Size>;
+template <typename T, std::size_t Size>
+repeat_view(T, index_t<Size>) -> repeat_view<T, Size>;
 
 namespace views {
 
-namespace fn {
+namespace taco {
 
-struct repeat_fn {
+struct repeat_closure {
         template <std::move_constructible T, std::size_t Size>
         requires std::is_object_v<T>
         constexpr auto YU_STATELESS_CALL_OPERATOR(T&& value, index_t<Size> index) {
@@ -46,9 +46,9 @@ struct repeat_fn {
         }
 };
 
-} // namespace fn
+} // namespace taco
 
-inline constexpr fn::repeat_fn repeat;
+inline constexpr taco::repeat_closure repeat;
 
 } // namespace views
 

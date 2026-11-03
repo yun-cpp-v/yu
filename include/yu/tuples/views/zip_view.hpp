@@ -2,15 +2,16 @@
 #ifndef YU_TUPLES_VIEWS_ZIP_VIEW_HPP_
 #define YU_TUPLES_VIEWS_ZIP_VIEW_HPP_
 
-#include "adaptor.hpp"
 #include "all.hpp"
 #include "empty_view.hpp"
+#include "tuple_adaptor_closure.hpp"
 #include "view_interface.hpp"
-#include <yu/meta/constant.hpp>
 #include <yu/tuples/access/get.hpp>
 #include <yu/tuples/access/index.hpp>
 #include <yu/tuples/concepts/tuple.hpp>
 #include <yu/tuples/concepts/view.hpp>
+#include <yu/utility/constant.hpp>
+#include <yu/utility/with_indices.hpp>
 #include <algorithm>
 #include <tuple>
 #include <utility>
@@ -38,9 +39,9 @@ class zip_view : public view_interface<zip_view<Views...>> {
 
         template <std::size_t Idx, typename Self>
         static consteval bool is_nothrow() {
-            return [&]<std::size_t... Is>(std::index_sequence<Is...>) {
-                return (noexcept(tuples::get(std::declval<Self>().base(index<Is>), index<Idx>)) && ...);
-            }(std::index_sequence_for<Views...>{});
+            return with_indices<sizeof...(Views)>([](auto... idx) {
+                return (noexcept(tuples::get(std::declval<Self>().base(idx), index<Idx>)) && ...);
+            });
         }
 
     public:
@@ -52,9 +53,9 @@ class zip_view : public view_interface<zip_view<Views...>> {
         template <std::size_t Idx, typename Self>
         requires (Idx < size)
         constexpr decltype(auto) get(this Self&& self) noexcept(is_nothrow<Idx, Self>()) {
-            return [&]<std::size_t... Is>(std::index_sequence<Is...>) {
-                return std::forward_as_tuple(tuples::get(std::forward<Self>(self).base(index<Is>), index<Idx>)...);
-            }(std::index_sequence_for<Views...>{});
+            return with_indices<sizeof...(Views)>([&](auto... idx) {
+                return std::forward_as_tuple(tuples::get(std::forward<Self>(self).base(idx), index<Idx>)...);
+            });
         }
 };
 

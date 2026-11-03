@@ -1,12 +1,22 @@
 // yutool: include guard
-#ifndef YU_META_CONSTANT_HPP_
-#define YU_META_CONSTANT_HPP_
+#ifndef YU_UTILITY_CONSTANT_HPP_
+#define YU_UTILITY_CONSTANT_HPP_
 
-#include "concepts/constant_like.hpp"
 #include <functional>
 #include <type_traits>
 
-namespace yu::meta {
+namespace yu {
+
+template <auto Value>
+struct constant_t;
+
+template <typename C>
+concept constant_like = requires { constant_t<std::remove_cvref_t<C>::value>{}; };
+
+template <typename C, typename T>
+concept constant_like_of = constant_like<C> && requires {
+    { auto(std::remove_cvref_t<C>::value) } -> std::same_as<T>;
+};
 
 namespace _detail::constant {
 
@@ -88,18 +98,18 @@ struct constant_t : _detail::constant::operators {
         constexpr operator value_type() const noexcept { return value; }
 };
 
+template <constant_like T>
+constant_t(T&&) -> constant_t<std::remove_cvref_t<T>::value>;
+
 template <constant_like F, constant_like... Args>
 requires requires { constant_t<std::invoke(F::value, Args::value...)>{}; }
 constexpr auto constant_invoke(F, Args...) noexcept {
     return constant_t<std::invoke(F::value, Args::value...)>{};
 }
 
-template <constant_like T>
-constant_t(T&&) -> constant_t<std::remove_cvref_t<T>::value>;
-
 template <auto V>
 inline constexpr constant_t<V> constant;
 
-} // namespace yu::meta
+} // namespace yu
 
 #endif

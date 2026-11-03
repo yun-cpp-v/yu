@@ -3,18 +3,17 @@
 #define YU_TUPLES_CONCEPTS_ELEMENTWISE_UNARY_PREDICATE_HPP_
 
 #include <yu/tuples/type_traits/element_type.hpp>
-#include <yu/tuples/utility/index_sequence_for.hpp>
+#include <yu/utility/with_indices.hpp>
 #include <concepts>
 #include <cstddef>
-#include <utility>
+#include <type_traits>
 
 namespace yu::tuples {
 
-// elementwise_unary_invocable
 template <typename Fn, typename Tuple>
-concept elementwise_unary_predicate = []<std::size_t... Idx>(std::index_sequence<Idx...>) {
-    return (std::predicate<Fn, element_type_t<Idx, Tuple>> && ...);
-}(indices_for<Tuple>);
+concept elementwise_unary_predicate = with_indices<size<std::remove_reference_t<Tuple>>::value>([](auto... idx) {
+    return (std::predicate<Fn, element_type_t<std::size_t(idx), Tuple>> && ...);
+});
 
 } // namespace yu::tuples
 

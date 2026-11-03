@@ -10,10 +10,11 @@
 #include <yu/tuples/access/size.hpp>
 #include <yu/tuples/concepts/tuple.hpp>
 #include <yu/tuples/projected.hpp>
-#include <yu/tuples/utility/index_sequence_for.hpp>
+#include <yu/utility/with_indices.hpp>
 #include <cstddef>
 #include <functional>
 #include <optional>
+#include <type_traits>
 #include <utility>
 
 namespace yu::tuples {
@@ -35,35 +36,33 @@ struct search_n_fn {
             Pred pred = {},
             Proj proj = {}
         ) {
-            constexpr std::size_t size = size_v<Tuple>;
+            constexpr std::size_t size = size_v<std::remove_reference_t<Tuple>>;
 
             if constexpr (size < Count) {
                 return std::nullopt;
             } else {
                 auto safe_pred = functional::with_fallback(std::ref(pred), false);
 
-                auto matched_at = [&](auto Offset) {
-                    return [&]<std::size_t... Idx>(std::index_sequence<Idx...>) {
+                auto matched_at = [&](auto offset) {
+                    return with_indices<Count>([&](auto... idx) {
                         return (
                             std::invoke(
                                 safe_pred,
-                                std::invoke(proj, tuples::get(std::forward<Tuple>(tuple), Offset + index<Idx>)),
+                                std::invoke(proj, tuples::get(std::forward<Tuple>(tuple), offset + idx)),
                                 value
                             )
                             && ...
                         );
-                    }(std::make_index_sequence<Count>{});
+                    });
                 };
 
-                auto find_matched_offset = [&]<std::size_t... Offsets>(std::index_sequence<Offsets...>) {
+                return with_indices<size - Count + 1>([&](auto... idx) {
                     std::optional<std::size_t> result;
 
-                    (void)((matched_at(index<Offsets>) && (result = Offsets, true)) || ...);
+                    (void)((matched_at(idx) && (result = std::size_t(idx), true)) || ...);
 
                     return result;
-                };
-
-                return find_matched_offset(std::make_index_sequence<size - Count + 1>{});
+                });
             }
         }
 };

@@ -2,28 +2,27 @@
 #ifndef YU_TUPLES_VIEWS_ELEMENTS_VIEW_HPP_
 #define YU_TUPLES_VIEWS_ELEMENTS_VIEW_HPP_
 
-#include "adaptor.hpp"
 #include "all.hpp"
+#include "tuple_adaptor_closure.hpp"
 #include "view_interface.hpp"
+#include <yu/config/constructor_object.hpp>
 #include <yu/tuples/access/index.hpp>
 #include <yu/tuples/access/size.hpp>
 #include <yu/tuples/concepts/tuple.hpp>
 #include <yu/tuples/concepts/tuple_of_tuples.hpp>
 #include <yu/tuples/concepts/view.hpp>
-#include <yu/tuples/utility/index_sequence_for.hpp>
+#include <yu/utility/with_indices.hpp>
+#include <type_traits>
 #include <utility>
 
 namespace yu::tuples {
 
 namespace _detail::elements_view {
 
-template <std::size_t N, typename T, std::size_t... Idx>
-consteval bool each_tuple_gettable_at_impl(std::index_sequence<Idx...>) {
-    return ((N < size_v<element_type_t<Idx, T>>) && ...);
-}
-
 template <std::size_t N, typename T>
-concept each_tuple_gettable_at = each_tuple_gettable_at_impl<N, T>(indices_for<T>);
+concept each_tuple_gettable_at = with_indices<size_v<std::remove_reference_t<T>>>([](auto... idx) {
+    return ((N < size_v<element_type_t<std::size_t(idx), T>>) && ...);
+});
 
 } // namespace _detail::elements_view
 
@@ -58,9 +57,7 @@ elements_view(Tuple&&, index_t<N>) -> elements_view<views::all_t<Tuple&&>, N>;
 
 namespace views {
 
-inline constexpr adaptor elements = []<tuple_of_tuples Tuple, std::size_t N>(Tuple&& tuple, index_t<N> n)
-                                        requires tuples::_detail::elements_view::each_tuple_gettable_at<N, Tuple>
-{ return elements_view{std::forward<Tuple>(tuple), n}; };
+inline constexpr adaptor elements = YU_CONSTRUCTOR_OBJECT(elements_view);
 
 } // namespace views
 

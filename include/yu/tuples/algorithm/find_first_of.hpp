@@ -9,7 +9,7 @@
 #include <yu/tuples/access/index.hpp>
 #include <yu/tuples/concepts/tuple.hpp>
 #include <yu/tuples/projected.hpp>
-#include <yu/tuples/utility/index_sequence_for.hpp>
+#include <yu/utility/with_indices.hpp>
 #include <cstddef>
 #include <functional>
 #include <optional>
@@ -34,6 +34,8 @@ struct find_first_of_fn {
             Proj1    proj1 = {},
             Proj2    proj2 = {}
         ) {
+            constexpr std::size_t size = size_v<std::remove_reference_t<Tuple1>>;
+
             auto test = [&](auto I) {
                 return tuples::any_of(
                     std::forward<Tuple2>(tuple2),
@@ -42,15 +44,13 @@ struct find_first_of_fn {
                 );
             };
 
-            auto find_index = [&]<std::size_t... Idx>(std::index_sequence<Idx...>) {
+            return with_indices<size>([&](auto... idx) {
                 std::optional<std::size_t> result;
 
-                (void)((test(index<Idx>) && (result = Idx, true)) || ...);
+                (void)((test(idx) && (result = std::size_t(idx), true)) || ...);
 
                 return result;
-            };
-
-            return find_index(indices_for<Tuple1>);
+            });
         }
 };
 
