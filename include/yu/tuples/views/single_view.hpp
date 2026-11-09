@@ -36,7 +36,7 @@ single_view(T) -> single_view<T>;
 
 namespace views {
 
-namespace taco {
+namespace fn {
 
 struct single_closure {
         template <std::move_constructible T>
@@ -46,9 +46,9 @@ struct single_closure {
         }
 };
 
-} // namespace taco
+} // namespace fn
 
-inline constexpr taco::single_closure single;
+inline constexpr fn::single_closure single;
 
 } // namespace views
 

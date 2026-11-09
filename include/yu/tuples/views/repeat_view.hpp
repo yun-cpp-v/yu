@@ -36,7 +36,7 @@ repeat_view(T, index_t<Size>) -> repeat_view<T, Size>;
 
 namespace views {
 
-namespace taco {
+namespace fn {
 
 struct repeat_closure {
         template <std::move_constructible T, std::size_t Size>
@@ -46,9 +46,9 @@ struct repeat_closure {
         }
 };
 
-} // namespace taco
+} // namespace fn
 
-inline constexpr taco::repeat_closure repeat;
+inline constexpr fn::repeat_closure repeat;
 
 } // namespace views
 
